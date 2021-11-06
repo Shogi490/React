@@ -6,7 +6,7 @@ function CardObjs(props) {
     <>
       <li className='cardsitem'>
         <Link className='cardsitemlink' to={props.path}>
-          <figure className='cardsitempic-wrap' data-category={props.label}>
+          <figure className='cardsitempic-wrap'>
             <img className='cardsitemimg' alt='Yes' src={props.src}/>
           </figure>
           <div className='cardsiteminfo'>
