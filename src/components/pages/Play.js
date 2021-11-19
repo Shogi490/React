@@ -1,11 +1,12 @@
 import React from 'react'
+import Board from '../Board';
 //import unity-react?
 
 function Play () {
 
     return (
         <>
-            <h1>Test play situations</h1>
+            <Board></Board>
         </>
     )
 }

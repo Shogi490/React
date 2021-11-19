@@ -1,8 +1,10 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom'
 import '../../App.css';
-import './Signup.css'
+import './Signup.css';
 //sign up page
 function Signup() {
+  const history = useHistory();
   return (
     <>
       <div className="login-wrapper">
@@ -29,9 +31,11 @@ function Signup() {
           <input type="password" placeholder="Password" required />
         </label>
         <div>
-          <button type="submit">Submit</button>
+          <button className="submitbutton" type="submit">Submit</button>
+  
         </div>
       </form>
+      <button className="submitbutton" onClick={() => {history.push('login')}}>Already Have an account? Login!</button>
       </div>
     </>
   );

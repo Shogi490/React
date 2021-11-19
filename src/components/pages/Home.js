@@ -1,18 +1,20 @@
 import React from 'react';
-import '../../App.css';
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
+import './Home.css'
 
 //home page
 function Home() {
+  const history = useHistory();
   return (
   
 	<>
-		
+		<h1> Welcome to Shogi Online </h1>
     <div className="landing-container">
-      <h1> Welcome to Shogi Online </h1>
-      <Link to="/play"><button>Play Shogi</button></Link>
-      <Link to="/learn"><button>Learn Shogi</button></Link>
-      <Link to="/sign-up"><button>Sign up</button></Link>
+      <div className="block--display">
+      <button className="home--button" onClick={() => {history.push('Play')}}>Play Shogi</button>
+      <button className="home--button" onClick={() => {history.push('Learn')}}>Learn Shogi</button>
+      <button className="home--button" onClick={() => {history.push('sign-up')}}>Sign up</button>
+      </div>
     </div>
 
    </>

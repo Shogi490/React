@@ -1,0 +1,19 @@
+.gameWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 10px;
+}
+.shogiBoard {
+    background: #242424;
+    width: 747px;
+    height: 747px;
+    margin-top: 40px;
+}
+
+.moveTracker {
+    background: #242424;
+    width: 200px;
+    height: 400px;
+    margin-left: 20px;
+}
