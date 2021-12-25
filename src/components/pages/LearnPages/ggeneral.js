@@ -5,6 +5,8 @@ function ggeneral() {
     return (
         <>
             <h1>The Gold General</h1>
+
+            <p></p>
         </>
     )
 }
