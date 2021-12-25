@@ -7,13 +7,17 @@ function Home() {
   return (
   
 	<>
-		
-    <div className="landing-container">
-      <h1> Welcome to Shogi Online </h1>
-      <Link to="/play"><button>Play Shogi</button></Link>
-      <Link to="/learn"><button>Learn Shogi</button></Link>
-      <Link to="/sign-up"><button>Sign up</button></Link>
+    <h1> Welcome to Shogi Online </h1>
+		<div className = "landing-container"> 
+        <switch>
+            <Link to="/play"><button>Play Shogi</button></Link>
+            <Link to="/learn"><button>Learn Shogi</button></Link>
+            <Link to="/sign-up"><button>Sign up</button></Link>  
+        </switch>
     </div>
+
+    
+    
 
    </>
   );
