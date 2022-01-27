@@ -1,0 +1,27 @@
+.home--button {
+    background-color: #242424;
+    border: none;
+    color: white;
+    padding: 15px 20px;
+    text-align: center;
+    text-decoration: none;
+    width: 200px;
+    height: 45px;
+}
+
+.block--display .home--button{
+    margin-left: 5px;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.home--button:hover {
+    background: #fff;
+    color: #242424;
+    transition: all 0.3s ease-out;
+    cursor: pointer;
+}
+
+.block--display {
+    max-width: 400px;
+}

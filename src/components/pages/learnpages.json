@@ -1,0 +1,49 @@
+{  
+    "King": {
+        "title": "The King",
+        "desc": "The king can move once space in any direction, unless that square is being attacked by the other player's piece.",
+        "promotion": "No promotion."
+    },
+
+    "GGeneral": {
+        "title": "The Gold General",
+        "desc": "The gold general can move one square orthogonally, or one square diagonally forward.",
+        "promotion": "No promotion."
+    },
+
+    "SGeneral": {
+        "title": "The Silver General",
+        "desc": "The silver general can move one space forward in several directions: forward, diagonally forward, or diagonally backward.",
+        "promotion": "The silver general promotes to a gold general when it reaches the promotion zone."
+    },
+
+    "Knight": {
+        "title": "The Knight",
+        "desc": "The knight can move two squares forward, then one sideways.",
+        "promotion": "The knight promotes to a gold general when it reaches the promotion zone."
+    },
+
+    "Lance": {
+        "title": "The Lance",
+        "desc": "The lance can move any number of spaces forward, but NOT sideways or backwards.",
+        "promotion": "The lance promotes to a gold general when it reaches the promotion zone."
+    },
+
+    "Bishop": {
+        "title": "The Bishop",
+        "desc": "The bishop can move any number of spaces diagonally. It cannot jump over other pieces.",
+        "promotion": "The bishop promotes to a dragon horse, which can move as a bishop, or one square in any orthogonal direction."
+    },
+
+    "Rook": {
+        "title": "The Rook",
+        "desc": "The rook can move any number of squares in an orthogonal direction.",
+        "promotion": "The rook promotes to a dragon king, which can move as a rook, or one square in any diagonal direction."
+    },
+
+    "Pawn": {
+        "title": "The Pawn",
+        "desc": "The pawn can move a single space forward, and captures in the same way it moves, contrary to chess.",
+        "promotion": "The pawn promotes to a gold general, called a 'tokin'."
+    }
+}

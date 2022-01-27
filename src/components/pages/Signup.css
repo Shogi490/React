@@ -1,0 +1,26 @@
+.login-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10%;
+}
+
+.signup-form {
+    margin: 0 auto;
+    box-shadow: 0 0 10px #000;
+    border:1px solid #000;
+    border-radius: 10px;
+    border: 1px solid #242424;
+    padding: 20px;
+}
+
+.submitbutton {
+    background-color: #242424;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    padding: 4px;
+    margin-top: 5px;
+    cursor: pointer;
+}
