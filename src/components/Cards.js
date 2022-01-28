@@ -3,8 +3,6 @@ import './Cards.css';
 import CardItem from './CardObjs';
 
 function Cards() {
-  
-
   return (
     <div className='cards'>
       <h1>LearnShogi Resources</h1>
@@ -24,7 +22,7 @@ function Cards() {
           </ul>
           <h1>Useful playlists</h1>
           <ul className="cardsitems">
-            <CardItem src='' text='Learn to play'  path='/how-to-play'/>
+            <CardItem src='' text='Learn to play'  path="how-to-play"/>
             <CardItem src='' text='Openings'  path='/openings'/>
             <CardItem src='' text='Famous Games' path='/famous-games' />
             <CardItem src='' text='More strategy'  path='/LearnInfo/Lance'/>

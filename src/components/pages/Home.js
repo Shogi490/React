@@ -1,19 +1,19 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import './Home.css'
 
 //home page
 function Home() {
-  const history = useHistory();
+  const history = useNavigate();
   return (
   
 	<>
 		<h1> Welcome to Shogi Online </h1>
     <div className="landing-container">
       <div className="block--display">
-      <button className="home--button" onClick={() => {history.push('Play')}}>Play Shogi</button>
-      <button className="home--button" onClick={() => {history.push('Learn')}}>Learn Shogi</button>
-      <button className="home--button" onClick={() => {history.push('sign-up')}}>Sign up</button>
+      <button className="home--button" onClick={() => {history('Play')}}>Play Shogi</button>
+      <button className="home--button" onClick={() => {history('Learn')}}>Learn Shogi</button>
+      <button className="home--button" onClick={() => {history('sign-up')}}>Sign up</button>
       </div>
     </div>
 
