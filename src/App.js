@@ -10,9 +10,7 @@ import PageNotFound from './components/pages/PageNotFound';
 import Login from './components/pages/login';
 //test
 /*
-          <Route path="/how-to-play" element={() => window.location.href = links[0]}/>
-          <Route path="/openings" element={() => window.location.href = links[1]}/>
-          <Route path="/famous-games" element={() => window.location.href = links[2]}/>
+
 
 */
 function App() {  
@@ -27,7 +25,9 @@ function App() {
           <Route  path="/sign-up" element={<Signup/>}/>
           <Route  path="/play" element={<Play/>}/>
           <Route path="/LearnInfo/:piece" element={<LearnInfo/>}/>
-
+          <Route path="/how-to-play" element={() => window.location.href = links[0]}/>
+          <Route path="/openings" element={() => window.location.href = links[1]}/>
+          <Route path="/famous-games" element={() => window.location.href = links[2]}/>
           <Route  path="/404" element={<PageNotFound/>}/>
           <Route  path="/login" element={<Login/>}/>
         </Routes>
