@@ -1,10 +1,10 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import '../../App.css';
 import './Signup.css';
 //sign up page
 function Signup() {
-  const history = useHistory();
+  const history = useNavigate();
   return (
     <>
       <div className="login-wrapper">
@@ -35,7 +35,7 @@ function Signup() {
   
         </div>
       </form>
-      <button className="submitbutton" onClick={() => {history.push('login')}}>Already Have an account? Login!</button>
+      <button className="submitbutton" onClick={() => {history('/login')}}>Already Have an account? Login!</button>
       </div>
     </>
   );
