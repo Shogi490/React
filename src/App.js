@@ -8,11 +8,9 @@ import Play from './components/pages/Play';
 import LearnInfo from './components/pages/LearnInfo';
 import PageNotFound from './components/pages/PageNotFound';
 import Login from './components/pages/login';
-//test
-/*
 
 
-*/
+
 function App() {  
   var links = [encodeURI('https://www.youtube.com/watch?v=Pkz0LVBg0W4&list=PL587865CAE59EB84A'),encodeURI('https://www.youtube.com/watch?v=Ly06LC7H0go&list=PL5CD9EDBA4FC444A8&index=1'),encodeURI('https://www.youtube.com/watch?v=FAWYQlElI4Q&list=PLB3D925021814AD0A&index=1')];
   return (
