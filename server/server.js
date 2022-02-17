@@ -5,5 +5,13 @@ require("dotenv").config({path: "./config.env"});
 const port = process.env.PORT || 5000;
 app.use(cors);
 app.use(express.json());
-//https://github.com/mongodb-developer/mern-stack-example/blob/main/mern/server/db/conn.js
-//https://www.mongodb.com/languages/mern-stack-tutorial
+
+app.use(require("./routes/record"));
+const dbo = require("./db/conn");
+
+app.listen(port, () => {
+  dbo.connectToServer(function (err) {
+    if (err) console.error(err);
+  });
+  console.log(`Server is running on port: ${port}`);
+});
