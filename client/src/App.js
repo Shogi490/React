@@ -8,11 +8,11 @@ import Play from './components/pages/Play';
 import LearnInfo from './components/pages/LearnInfo';
 import PageNotFound from './components/pages/PageNotFound';
 import Login from './components/pages/login';
+import UserProfile from "./components/pages/UserProfile.js"
 
 
 
 function App() {  
-  var links = [encodeURI('https://www.youtube.com/watch?v=Pkz0LVBg0W4&list=PL587865CAE59EB84A'),encodeURI('https://www.youtube.com/watch?v=Ly06LC7H0go&list=PL5CD9EDBA4FC444A8&index=1'),encodeURI('https://www.youtube.com/watch?v=FAWYQlElI4Q&list=PLB3D925021814AD0A&index=1')];
   return (
     <>
       <Router>
@@ -23,11 +23,12 @@ function App() {
           <Route  path="/sign-up" element={<Signup/>}/>
           <Route  path="/play" element={<Play/>}/>
           <Route path="/LearnInfo/:piece" element={<LearnInfo/>}/>
-          <Route path="/how-to-play" element={() => window.location.href = links[0]}/>
-          <Route path="/openings" element={() => window.location.href = links[1]}/>
-          <Route path="/famous-games" element={() => window.location.href = links[2]}/>
+          <Route path="/how-to-play" element={<LearnInfo/>}/>
+          <Route path="/openings" element={<LearnInfo/>}/>
+          <Route path="/famous-games" element={<LearnInfo/>}/>
           <Route  path="/404" element={<PageNotFound/>}/>
           <Route  path="/login" element={<Login/>}/>
+          <Route path='/user/:id' element={<UserProfile/>}/>
         </Routes>
       </Router>
 
