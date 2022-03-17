@@ -48,7 +48,7 @@ app.get("/404", (req,res) => {
 })
 
 app.get("/isuserauth", verifyJWT, (req,res) => {
-    res.send("Psst you're authenticated ;)");
+    res.send("Psst you're authenticated)");
 })
  
 app.post('/login', function (req,res,next) {
