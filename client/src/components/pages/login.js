@@ -6,9 +6,25 @@ import "./Signup.css"
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState(""); 
+  const [loginStatus, setLoginStatus] = useState(false);
   const handleSubmit = event => {
     event.preventDefault();
-    axios.post("http://localhost:5000/login", {username, password}).then(res => {console.log(res); console.log(res.data);});
+    axios.post("http://localhost:5000/login", {username, password}).then((res) => {
+      if(res.data.sucess === false) {
+        setLoginStatus(false);
+      } else {
+        localStorage.setItem("token", res.data.token);
+        setLoginStatus(true);
+      }
+    });
+  }
+
+  const userAuthenticated = () => {
+    axios.get("http://localhost:5000/isuserauth", {
+      headers: {
+        "x-access-token": localStorage.getItem("token")
+      }
+    }).then((res) => console.log(res));
   }
   return(
     <>
@@ -26,7 +42,11 @@ const Login = () => {
         <div>
           <button className="submitbutton" type="submit">Login</button>
         </div>
+
       </form>
+      <div>
+          {loginStatus &&  (<button onClick={userAuthenticated} >Check if authenticated</button>)}
+        </div>
       </div>
     </>
 
