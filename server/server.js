@@ -6,6 +6,7 @@ const passportLocalMongoose = require("passport-local-mongoose");
 const passportLocal = require("passport-local")
 const app  = express();
 const cors = require("cors");
+var jwt = require('jsonwebtoken');
 
 app.use(cors());
 
@@ -38,7 +39,9 @@ app.post('/login', function (req,res,next) {
         }
         req.login(user, loginErr => {
             if(loginErr) return next( loginErr);
-            return res.send({success: true, message: "Auth succeeded"})
+            //the jwt secret needs to be an env variable, will add to .env file eventually.
+            const token =  jwt.sign({userId : user._id, username:user.username}, "TheG0ldenC@tRunsFree", {expiresIn: '24h'})
+            return res.send({success: true, message: "Auth succeeded", token: token})
         })
 
     })(req,res,next);
