@@ -21,7 +21,7 @@ const verifyJWT = (req, res, next) => {
             if(err) {
                 res.json({sucess: false, message: "Failed to authenticate token"});
             } else {
-                req.userId = decoded.id;
+                req.username = decoded.username;
                 next();
             }
         })
@@ -48,7 +48,7 @@ app.get("/404", (req,res) => {
 })
 
 app.get("/isuserauth", verifyJWT, (req,res) => {
-    res.send("Psst you're authenticated)");
+    res.send({username: req.username});
 })
  
 app.post('/login', function (req,res,next) {
@@ -62,7 +62,7 @@ app.post('/login', function (req,res,next) {
         req.login(user, loginErr => {
             if(loginErr) res.json({sucess: false, message: "Login Error"});
             //the jwt secret needs to be an env variable, will add to .env file eventually.
-            const token =  jwt.sign({userId : user._id, username:user.username}, "TheG0ldenC@tRunsFree", {expiresIn: '24h'})
+            const token =  jwt.sign({userId : user._id, username:user.username}, "TheG0ldenC@tRunsFree", {expiresIn: '1200000'})
             return res.send({success: true, message: "Auth succeeded", token: token})
         })
 
