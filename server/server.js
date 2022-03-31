@@ -6,9 +6,27 @@ const passportLocalMongoose = require("passport-local-mongoose");
 const passportLocal = require("passport-local")
 const app  = express();
 const cors = require("cors");
+var jwt = require('jsonwebtoken');
 
 app.use(cors());
 
+//middleware for verification of JWT
+const verifyJWT = (req, res, next) => {
+    const token = req.headers["x-access-token"];
+
+    if(!token) {
+        res.send("You are not authorized.");
+    } else {
+        jwt.verify(token, "TheG0ldenC@tRunsFree", (err, decoded) => {
+            if(err) {
+                res.json({sucess: false, message: "Failed to authenticate token"});
+            } else {
+                req.username = decoded.username;
+                next();
+            }
+        })
+    }
+}
 
 //import user model
 const User = require('./model/user');
@@ -28,6 +46,11 @@ mongoose.connect(process.env.MONGO_URL, {useNewUrlParser: true}).then(()=> conso
 app.get("/404", (req,res) => {
     res.json({message: "404 page not found"});
 })
+
+app.get("/isuserauth", verifyJWT, (req,res) => {
+    res.send({username: req.username});
+})
+ 
 app.post('/login', function (req,res,next) {
     passport.authenticate('local', function(err, user, info) {
         if(err) {
@@ -37,8 +60,10 @@ app.post('/login', function (req,res,next) {
             return res.send({success: false, message: "Wrong username or password"});
         }
         req.login(user, loginErr => {
-            if(loginErr) return next( loginErr);
-            return res.send({success: true, message: "Auth succeeded"})
+            if(loginErr) res.json({sucess: false, message: "Login Error"});
+            //the jwt secret needs to be an env variable, will add to .env file eventually.
+            const token =  jwt.sign({userId : user._id, username:user.username}, "TheG0ldenC@tRunsFree", {expiresIn: '1200000'})
+            return res.send({success: true, message: "Auth succeeded", token: token})
         })
 
     })(req,res,next);

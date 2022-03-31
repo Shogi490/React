@@ -9,14 +9,30 @@ import LearnInfo from './components/pages/LearnInfo';
 import PageNotFound from './components/pages/PageNotFound';
 import Login from './components/pages/login';
 import UserProfile from "./components/pages/UserProfile.js"
+import { useState, useEffect } from "react";
+const axios = require("axios");
 
-
-
-function App() {  
+function App() { 
+  const [username, setUsername] = useState(undefined); 
+  useEffect(() => {
+    if(localStorage.getItem("token") === null) {
+      setUsername(undefined);
+    } else {
+      axios.get("http://localhost:5000/isuserauth", {
+        headers: {
+          "x-access-token": localStorage.getItem("token")
+        }
+      }).then((res) => {
+          setUsername(res.data.username);
+      }).catch((error) => {
+          console.log(error);
+      })
+    }
+  }, [])
   return (
     <>
       <Router>
-        <Navbar/>
+        <Navbar username={username}/>
         <Routes>
           <Route path="/"  element={<Home/>}/> 
           <Route  path="/learn" element={<Learn/>}/>
