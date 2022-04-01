@@ -4,6 +4,8 @@ import axios from "axios";
 import '../../App.css';
 import './Signup.css';
 //sign up page
+
+
 function Signup() {
   const history = useNavigate();
   const [email, setEmail] = useState("");
@@ -16,6 +18,7 @@ function Signup() {
   }
   return (
     <>
+    <div className="background-login">
       <div className="login-wrapper">
       <h1>Sign up</h1>
       <form className="signup-form" onSubmit={handleSubmit}>
@@ -37,6 +40,7 @@ function Signup() {
         </div>
       </form>
       <button className="submitbutton" onClick={() => {history('/login')}}>Already Have an account? Login!</button>
+      </div>
       </div>
     </>
   );
