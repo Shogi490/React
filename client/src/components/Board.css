@@ -4,6 +4,7 @@
     justify-content: center;
     padding-left: 10px;
     background-image: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.giappominkia.com%2Fwp-content%2Fuploads%2F2019%2F10%2Fshogi-scacchi-giapponesi.jpg&f=1&nofb=1");
+    background-color: burlywood;
 }
 .shogiBoard {
     background: #242424;
