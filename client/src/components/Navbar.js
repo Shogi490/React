@@ -39,7 +39,7 @@ function Navbar( { username } ) {
                             <Link to="/sign-up" className="nav-links-mobile" onClick={closeMobileMenu}>Sign Up</Link>
                         </li>
                     </ul>
-                    {(username === undefined) ? <Button buttonStyle="btn--outline"></Button> : <button id="username-button" onClick={()=> navigate("/user/"+username)}>{username}</button>}
+                    {(username === undefined) ? <Button buttonStyle="btn--outline">Sign Up</Button> : <button id="username-button" onClick={()=> navigate("/user/"+username)}>{username}</button>}
                 </div>
             </nav>
         </>
