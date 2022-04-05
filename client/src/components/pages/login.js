@@ -28,6 +28,7 @@ const Login = () => {
   }
   return(
     <>
+    <div className="background-login">
     <div className="login-wrapper">
       <h1>Login</h1>
       <form className="signup-form" onSubmit={handleSubmit}>
@@ -47,6 +48,7 @@ const Login = () => {
       <div>
           {loginStatus &&  (<button onClick={userAuthenticated} >Check if authenticated</button>)}
         </div>
+      </div>
       </div>
     </>
 
