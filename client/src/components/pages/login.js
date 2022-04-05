@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { useNavigate } from "react-router";
 import axios from "axios";
 import "./Signup.css"
 
@@ -7,6 +8,7 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState(""); 
   const [loginStatus, setLoginStatus] = useState(false);
+  const navigate = useNavigate();
   const handleSubmit = event => {
     event.preventDefault();
     axios.post("http://localhost:5000/login", {username, password}).then((res) => {
@@ -15,6 +17,7 @@ const Login = () => {
       } else {
         localStorage.setItem("token", res.data.token);
         setLoginStatus(true);
+        navigate("/user/"+username);
       }
     });
   }

@@ -80,9 +80,13 @@ app.post("/sign-up", (req,res) => {
 });
 
 app.get("/user/:id", verifyJWT , (req,res) => {
-    //if id = req.username from jwt, then we can continue 
+    let id = req.params.id;
+    if (req.username === id) {
+        res.json({isPerson: true}); //send database material too
+    } else {
+        res.json({isPerson: false}); //send database material too
+    }
 })
-
 
 const port = process.env.port || 5000;
 

@@ -15,7 +15,8 @@ function Navbar( { username } ) {
         } else {
             setButton(true);
         }
-    }
+    };
+    
     useEffect(()=> {
         showButton();
     }, []);
@@ -43,7 +44,7 @@ function Navbar( { username } ) {
                 </div>
             </nav>
         </>
-    )
+    );
 }
 
 export default Navbar
