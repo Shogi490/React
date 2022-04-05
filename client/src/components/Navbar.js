@@ -36,10 +36,10 @@ function Navbar( { username } ) {
                             <Link to="/learn" className="nav-links" onClick={closeMobileMenu}>Learn</Link>
                         </li>
                         <li className="nav-item">
-                            <Link to="/sign-up" className="nav-links-mobile" onClick={closeMobileMenu}>Sign Up</Link>
+                            {(username === undefined) ? <Link to="/sign-up" className="nav-links-mobile" onClick={closeMobileMenu}>Sign Up</Link> : <Link to={"/user/"+username} className="nav-links-mobile" onClick={closeMobileMenu}>{username}</Link>}
                         </li>
                     </ul>
-                    {(username === undefined) ? button && <Button buttonStyle="btn--outline">Sign up</Button> : <button id="username-button" onClick={()=> navigate("/user/"+username)}>{username}</button>}
+                    {(username === undefined) ? button && <Button buttonStyle="btn--outline">Sign up</Button> : button && <button id="username-button" onClick={()=> navigate("/user/"+username)}>{username}</button>}
                 </div>
             </nav>
         </>
