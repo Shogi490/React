@@ -13,7 +13,6 @@ app.use(cors());
 //middleware for verification of JWT
 const verifyJWT = (req, res, next) => {
     const token = req.headers["x-access-token"];
-
     if(!token) {
         res.send("You are not authorized.");
     } else {
@@ -62,7 +61,7 @@ app.post('/login', function (req,res,next) {
         req.login(user, loginErr => {
             if(loginErr) res.json({sucess: false, message: "Login Error"});
             //the jwt secret needs to be an env variable, will add to .env file eventually.
-            const token =  jwt.sign({userId : user._id, username:user.username}, "TheG0ldenC@tRunsFree", {expiresIn: '1200000'})
+            const token =  jwt.sign({userId : user._id, username:user.username}, "TheG0ldenC@tRunsFree", {expiresIn: '24h'})
             return res.send({success: true, message: "Auth succeeded", token: token})
         })
 
@@ -80,6 +79,14 @@ app.post("/sign-up", (req,res) => {
         });
 });
 
+app.get("/user/:id", verifyJWT , (req,res) => {
+    let id = req.params.id;
+    if (req.username === id) {
+        res.json({isPerson: true}); //send database material too
+    } else {
+        res.json({isPerson: false}); //send database material too
+    }
+})
 
 const port = process.env.port || 5000;
 
