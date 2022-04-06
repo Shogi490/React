@@ -9,6 +9,7 @@ function Home() {
   
     <div className="section">
         <h1> Shogi </h1>
+        <h2> Weclome to Shogi </h2>
         <div className = "video-container">
           <div className = "color-overlay"> 
         </div>
