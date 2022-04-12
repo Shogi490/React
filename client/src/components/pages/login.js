@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { useNavigate } from "react-router";
 import axios from "axios";
 import "./Signup.css"
 
@@ -6,12 +7,31 @@ import "./Signup.css"
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState(""); 
+  const [loginStatus, setLoginStatus] = useState(false);
+  const navigate = useNavigate();
   const handleSubmit = event => {
     event.preventDefault();
-    axios.post("http://localhost:5000/login", {username, password}).then(res => {console.log(res); console.log(res.data);});
+    axios.post("http://localhost:5000/login", {username, password}).then((res) => {
+      if(res.data.sucess === false) {
+        setLoginStatus(false);
+      } else {
+        localStorage.setItem("token", res.data.token);
+        setLoginStatus(true);
+        navigate("/user/"+username);
+      }
+    });
+  }
+
+  const userAuthenticated = () => {
+    axios.get("http://localhost:5000/isuserauth", {
+      headers: {
+        "x-access-token": localStorage.getItem("token")
+      }
+    }).then((res) => console.log(res));
   }
   return(
     <>
+    <div className="background-login">
     <div className="login-wrapper">
       <h1>Login</h1>
       <form className="signup-form" onSubmit={handleSubmit}>
@@ -26,7 +46,12 @@ const Login = () => {
         <div>
           <button className="submitbutton" type="submit">Login</button>
         </div>
+
       </form>
+      <div>
+          {loginStatus &&  (<button onClick={userAuthenticated} >Check if authenticated</button>)}
+        </div>
+      </div>
       </div>
     </>
 

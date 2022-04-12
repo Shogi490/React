@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Button } from './Button';
 import './Navbar.css';
 
-function Navbar() {
+function Navbar( { username } ) {
+    const navigate = useNavigate();
     const [click, setClick] = useState(false);
     const handleClick = () => setClick(!click);
     const closeMobileMenu = () => setClick(false);
@@ -14,12 +15,11 @@ function Navbar() {
         } else {
             setButton(true);
         }
-    }
-
+    };
+    
     useEffect(()=> {
         showButton();
     }, []);
-
     window.addEventListener('resize', showButton);
     return (
         <>
@@ -37,14 +37,14 @@ function Navbar() {
                             <Link to="/learn" className="nav-links" onClick={closeMobileMenu}>Learn</Link>
                         </li>
                         <li className="nav-item">
-                            <Link to="/sign-up" className="nav-links-mobile" onClick={closeMobileMenu}>Sign Up</Link>
+                            {(username === undefined) ? <Link to="/sign-up" className="nav-links-mobile" onClick={closeMobileMenu}>Sign Up</Link> : <Link to={"/user/"+username} className="nav-links-mobile" onClick={closeMobileMenu}>{username}</Link>}
                         </li>
                     </ul>
-                    {button && <Button buttonStyle="btn--outline">Sign Up</Button>}
+                    {(username === undefined) ? button && <Button buttonStyle="btn--outline">Sign up</Button> : button && <button id="username-button" onClick={()=> navigate("/user/"+username)}>{username}</button>}
                 </div>
             </nav>
         </>
-    )
+    );
 }
 
 export default Navbar
