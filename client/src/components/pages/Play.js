@@ -6,12 +6,10 @@ import { useNavigate } from 'react-router-dom'
 function Play () {
     return (
       <div className = "board-background">
-        <>
             <Board></Board>
-        </>
-            <button className="play--button" >Play With Friend</button>
-            <button className="play--button" > Ranked Match</button>
-            <button className="play--button" > Casual Match</button>
+            <button className="play--button">Play With Friend</button>
+            <button className="play--button"> Ranked Match</button>
+            <button className="play--button"> Casual Match</button>
       </div>
     )
     
