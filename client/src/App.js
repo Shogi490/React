@@ -10,6 +10,7 @@ import PageNotFound from './components/pages/PageNotFound';
 import Login from './components/pages/login';
 import UserProfile from "./components/pages/UserProfile.js"
 import { useState, useEffect } from "react";
+import GameOptions from './components/GameOptions';
 const axios = require("axios");
 
 function App() { 
@@ -29,10 +30,17 @@ function App() {
       })
     }
   }, [username])
+
+  const [showGameOptions, setShowGameOptions] = useState(false);
+  let clickedShow = function (temp) {
+    setShowGameOptions(!showGameOptions);
+  }
+
   return (
     <>
       <Router>
-        <Navbar username={username}/>
+        <Navbar username={username} showGameOptions={clickedShow}/>
+        {showGameOptions == true && <GameOptions closeGameOptions={clickedShow}/>}
         <Routes>
           <Route path="/"  element={<Home/>}/> 
           <Route  path="/learn" element={<Learn/>}/>
