@@ -20,7 +20,7 @@ var gameSchema = new Schema({
     timeControl : String,
     minutesPerSide : Number,
     byoyomiInSeconds : Number,
-    correspondence: Number,
+    daysPerTurn: Number,
     dateSinceLastCorrespondence: Date,
 })
   
