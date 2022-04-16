@@ -22,6 +22,8 @@ var gameSchema = new Schema({
     byoyomiInSeconds : Number,
     daysPerTurn: Number,
     dateSinceLastCorrespondence: Date,
+    creatorTimeLeft : Number,
+    opponentTimeLeft: Number,
 })
   
 UserSchema.plugin(passportLocalMongoose);
