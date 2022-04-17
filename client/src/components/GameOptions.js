@@ -16,6 +16,10 @@ function GameOptions({closeGameOptions, callOnFinish}) {
     // if the game is a PvP game we have to wait until both players are ready before doing the above.
     // otherwise it's a CPU game, in which case it's OK to throw the game into the db and start.
     // for now the second options is always the case.
+    if(timeControl == "Real Time" && minutesPerSide == 0 && byoyomiInSeconds == 0){
+      alert("Invalid Time Control!");
+      return;
+    }
     setisPvP(false);
     // send to db
     let isStartingBlack = (startingSide == "Black");
