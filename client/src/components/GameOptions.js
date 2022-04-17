@@ -33,7 +33,9 @@ function GameOptions({closeGameOptions, callOnFinish}) {
       minutesPerSide : minutesPerSide,
       byoyomiInSeconds : byoyomiInSeconds,
       daysPerTurn : daysPerTurn,
-      dateSinceLastCorrespondence : Date.now()
+      dateSinceLastCorrespondence : Date.now(),
+      creatorTimeLeft : timeControl == "Real Time" ? minutesPerSide * 60 + byoyomiInSeconds : daysPerTurn * 86400,
+      opponentTimeLeft : timeControl == "Real Time" ? minutesPerSide * 60 + byoyomiInSeconds : daysPerTurn * 86400,
     }
     callOnFinish(gameOptions);
   }
