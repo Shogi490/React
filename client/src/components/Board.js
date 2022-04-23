@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import "./Board.css"
 import Unity, { UnityContext } from "react-unity-webgl";
+import { makeSfen } from "shogiops/sfen";
+import { parseUsi } from 'shogiops/util';
+import { Shogi } from 'shogiops/shogi';
 
 const unityContext = new UnityContext({
     loaderUrl: "build/Build/build.loader.js",
@@ -13,6 +16,13 @@ function Board({ game }) {
 
     const [progression, setProgression] = useState(0);
     // const [moves, setMoves] = useState(game.moveHistory);
+
+    useEffect(function () {
+        const pos = Shogi.default();
+        const move = parseUsi('7g7f');
+        pos.play(move);
+        console.log(makeSfen(pos.toSetup()));
+    }, [])
 
     useEffect(function () {
         // the board component can only exist if a game is currently ongoing.
