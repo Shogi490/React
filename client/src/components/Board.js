@@ -12,16 +12,17 @@ const unityContext = new UnityContext({
     codeUrl: "build/Build/build.wasm",
 });
 
-function Board({ game }) {
+function Board({ gameInitSettings }) {
 
     const [progression, setProgression] = useState(0);
+    const [game, setGame] = useState(Shogi.default());
     // const [moves, setMoves] = useState(game.moveHistory);
 
     useEffect(function () {
-        const pos = Shogi.default();
+        // if game has a different starting sfen/moveset. This is where we would overwrite game.
         const move = parseUsi('7g7f');
-        pos.play(move);
-        console.log(makeSfen(pos.toSetup()));
+        game.play(move);
+        console.log(makeSfen(game.toSetup()));
     }, [])
 
     useEffect(function () {
@@ -35,6 +36,11 @@ function Board({ game }) {
             // even if progression is 100%, this does NOT mean we're done initializing. We still need to send Unity some initilization values.
             setProgression(progression);
         });
+        unityContext.on("Move", function (usiMove) {
+            // const move = parseUsi(usiMove);
+            // game.play(move);
+            // sendMoveToEnemy?
+        })
     }, []);
 
     useEffect(function () {
