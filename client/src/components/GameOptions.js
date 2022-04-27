@@ -16,14 +16,14 @@ function GameOptions({closeGameOptions, callOnFinish}) {
     // if the game is a PvP game we have to wait until both players are ready before doing the above.
     // otherwise it's a CPU game, in which case it's OK to throw the game into the db and start.
     // for now the second options is always the case.
-    if(timeControl == "Real Time" && minutesPerSide == 0 && byoyomiInSeconds == 0){
+    if(timeControl === "Real Time" && minutesPerSide === 0 && byoyomiInSeconds === 0){
       alert("Invalid Time Control!");
       return;
     }
     setisPvP(false);
     // send to db
-    let isStartingBlack = (startingSide == "Black");
-    if(startingSide == "Random"){
+    let isStartingBlack = (startingSide === "Black");
+    if(startingSide === "Random"){
       isStartingBlack = Math.random() < 0.5 ? true : false;
     }
     let gameOptions = {
@@ -38,8 +38,8 @@ function GameOptions({closeGameOptions, callOnFinish}) {
       byoyomiInSeconds : byoyomiInSeconds,
       daysPerTurn : daysPerTurn,
       dateSinceLastCorrespondence : Date.now(),
-      creatorTimeLeft : timeControl == "Real Time" ? minutesPerSide * 60 + byoyomiInSeconds : daysPerTurn * 86400,
-      opponentTimeLeft : timeControl == "Real Time" ? minutesPerSide * 60 + byoyomiInSeconds : daysPerTurn * 86400,
+      creatorTimeLeft : timeControl === "Real Time" ? minutesPerSide * 60 + byoyomiInSeconds : daysPerTurn * 86400,
+      opponentTimeLeft : timeControl === "Real Time" ? minutesPerSide * 60 + byoyomiInSeconds : daysPerTurn * 86400,
     }
     callOnFinish(gameOptions);
   }
@@ -47,7 +47,6 @@ function GameOptions({closeGameOptions, callOnFinish}) {
   return (
     <div className="game-options-overlay">
       <div className="game-options-wrapper" onClick={()=>{}}>
-        <span className="close" onClick={()=>{closeGameOptions()}}>X</span>
         <h1>Setup Game</h1>
         <form className="game-options-form" onSubmit = {handleSubmit}>
           <label className = "selector">
@@ -67,7 +66,7 @@ function GameOptions({closeGameOptions, callOnFinish}) {
                 </select>
               </label>
             </div>
-            {timeControl == "Real Time" && 
+            {timeControl === "Real Time" && 
               <div className="game-option">
                 <label className="range-selector>">
                   Minutes per side: {minutesPerSide} <br/>
@@ -75,7 +74,7 @@ function GameOptions({closeGameOptions, callOnFinish}) {
                 </label>
               </div>
             }
-            {timeControl == "Real Time" && 
+            {timeControl === "Real Time" && 
               <div className="game-option">
                 <label className="range-selector>">
                   Byoyomi In Seconds: {byoyomiInSeconds} <br/>
@@ -83,7 +82,7 @@ function GameOptions({closeGameOptions, callOnFinish}) {
                 </label>
               </div>
             }
-            {timeControl == "Correspondence" && 
+            {timeControl === "Correspondence" && 
               <div className="game-option">
                 <label className="range-selector>">
                   Days per turn: {daysPerTurn}
@@ -92,7 +91,7 @@ function GameOptions({closeGameOptions, callOnFinish}) {
               </div>
             }
           </div>
-          {isPvP == false && 
+          {isPvP === false && 
             <div className="game-option">
               <label className="range-selector>">
                 Strength: {cpuStrength} <br/>
@@ -114,5 +113,4 @@ function GameOptions({closeGameOptions, callOnFinish}) {
     </div>
   );
 }
-
 export default GameOptions;
