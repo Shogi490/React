@@ -1,9 +1,14 @@
 import React from 'react'
 import Board from '../Board';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import {useState} from "react";
 //import unity-react?
 
 function Play () {
+  const [showGameOptions, setShowGameOptions] = useState(false);
+  let clickedShow = function (temp) {
+    setShowGameOptions(!showGameOptions);
+  }
     return (
       <div className = "board-background">
             <Board></Board>

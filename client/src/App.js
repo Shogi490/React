@@ -9,38 +9,12 @@ import LearnInfo from './components/pages/LearnInfo';
 import PageNotFound from './components/pages/PageNotFound';
 import Login from './components/pages/login';
 import UserProfile from "./components/pages/UserProfile.js"
-import { useState, useEffect } from "react";
-import GameOptions from './components/GameOptions';
-const axios = require("axios");
 
 function App() { 
-  const [username, setUsername] = useState(undefined); 
-  useEffect(() => {
-    if(localStorage.getItem("token") === null) {
-      setUsername(undefined);
-    } else {
-      axios.get("http://localhost:5000/isuserauth", {
-        headers: {
-          "x-access-token": localStorage.getItem("token")
-        }
-      }).then((res) => {
-          setUsername(res.data.username);
-      }).catch((error) => {
-          console.log(error);
-      })
-    }
-  }, [username])
-
-  const [showGameOptions, setShowGameOptions] = useState(false);
-  let clickedShow = function (temp) {
-    setShowGameOptions(!showGameOptions);
-  }
-
   return (
     <>
       <Router>
-        <Navbar username={username} showGameOptions={clickedShow}/>
-        {showGameOptions == true && <GameOptions closeGameOptions={clickedShow}/>}
+        <Navbar/>
         <Routes>
           <Route path="/"  element={<Home/>}/> 
           <Route  path="/learn" element={<Learn/>}/>
@@ -53,6 +27,7 @@ function App() {
           <Route  path="/404" element={<PageNotFound/>}/>
           <Route  path="/login" element={<Login/>}/>
           <Route path='/user/:id' element={<UserProfile/>}/>
+          <Route path='/game/:id' element={<UserProfile/>}/>
         </Routes>
       </Router>
 

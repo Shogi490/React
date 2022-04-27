@@ -2,10 +2,11 @@ import React, {useState, useEffect} from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button } from './Button';
 import './Navbar.css';
-import GameOptions from './GameOptions';
+import jwt_decode from "jwt-decode";
 
-function Navbar( { username , showGameOptions} ) {
+function Navbar() {
     const navigate = useNavigate();
+    const [username, setUsername] = useState(undefined);
     const [click, setClick] = useState(false);
     const handleClick = () => setClick(!click);
     const closeMobileMenu = () => setClick(false);
@@ -17,10 +18,22 @@ function Navbar( { username , showGameOptions} ) {
             setButton(true);
         }
     };
-    
+    const getUsername = () => {
+        const token = (localStorage.getItem('token'));
+        if(token) {
+          const decoded = jwt_decode(token);
+          setUsername(decoded.username);
+        }
+        window.addEventListener('storage', getUsername);
+    }
+    useEffect(() => {
+        getUsername();
+
+    }, [getUsername])
     useEffect(()=> {
         showButton();
     }, []);
+
     window.addEventListener('resize', showButton);
     return (
         <>
@@ -33,9 +46,6 @@ function Navbar( { username , showGameOptions} ) {
                     <ul className={click ? 'nav-menu active' : 'nav-menu'}>
                         <li className="nav-item">
                             <Link to="/play" className="nav-links" onClick={closeMobileMenu}>Play</Link>
-                        </li>
-                        <li className="nav-item">
-                            <div className="nav-links" onClick={() => {showGameOptions(true)}}> Temp </div>
                         </li>
                         <li className="nav-item">
                             <Link to="/learn" className="nav-links" onClick={closeMobileMenu}>Learn</Link>
