@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import './GameOptions.css';
+const axios = require("axios");
 
-function GameOptions({closeGameOptions, callOnFinish}) {
+
+function GameOptions({callOnFinish}) {
   const [isPvP, setisPvP] = useState(false);
   const [timeControl, setTimeControl] = useState("Real Time");
   const [minutesPerSide, setMinutesPerSide] = useState(5);
@@ -41,7 +43,10 @@ function GameOptions({closeGameOptions, callOnFinish}) {
       creatorTimeLeft : timeControl === "Real Time" ? minutesPerSide * 60 + byoyomiInSeconds : daysPerTurn * 86400,
       opponentTimeLeft : timeControl === "Real Time" ? minutesPerSide * 60 + byoyomiInSeconds : daysPerTurn * 86400,
     }
-    callOnFinish(gameOptions);
+    axios.post("http://localhost:5000/create/game", gameOptions).then((res) => {
+      //success, GameId
+      console.log(res);
+    })
   }
 
   return (

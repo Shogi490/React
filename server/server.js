@@ -28,7 +28,9 @@ const verifyJWT = (req, res, next) => {
 }
 
 //import user model
-const User = require('./model/user');
+const Schemas = require('./model/user.js');
+const User = Schemas.UserSchema;
+const Game = Schemas.GameSchema;
 passport.use((User.createStrategy()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
@@ -70,13 +72,13 @@ app.post('/login', function (req,res,next) {
 
 app.post("/sign-up", (req,res) => {
     Users=new User({email: req.body.email, username : req.body.username});
-        User.register(Users, req.body.password, function(err, user) {
-            if (err) {
-              res.json({success:false, message:"Your account could not be saved. Error: ", err});
-            }else{
-              res.json({success: true, message: "Your account has been saved"});
-            }
-        });
+    User.register(Users, req.body.password, function(err, user) {
+        if (err) {
+            res.json({success:false, message:"Your account could not be saved. Error: ", err});
+        }else{
+            res.json({success: true, message: "Your account has been saved"});
+        }
+    });
 });
 
 app.get("/user/:id", verifyJWT , (req,res) => {
@@ -86,6 +88,32 @@ app.get("/user/:id", verifyJWT , (req,res) => {
     } else {
         res.json({isPerson: false}); //send database material too
     }
+})
+app.get("/test/", (req,res) => {
+    Game.findOne({creatorIsBlack: true}, (err, game) => {
+        console.log(game);
+    })
+})
+app.post("/create/game", (req,res) => {
+    Game.create(
+        {
+            isComputerGame : true,
+            creatorID: "6223e428329534cee70cb0df",
+            creatorIsBlack : true,
+            moveHistory : [],
+            currentSFEN : "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+            timeMade : Date.now(),
+            timeControl : "timeControl",
+            minutesPerSide : 1,
+            byoyomiInSeconds : 1,
+            daysPerTurn : 1,
+            dateSinceLastCorrespondence : Date.now(),
+            creatorTimeLeft : 1,
+            opponentTimeLeft : 1
+        }, function(err,doc) {
+            if(err) return console.error(err);
+            res.json({_id: doc._id, message: "succ"});
+        });
 })
 
 const port = process.env.port || 5000;

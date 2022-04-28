@@ -9,23 +9,24 @@ var UserSchema = new Schema({
     games: [ObjectId],
 });
 
-var gameSchema = new Schema({
-    isComputerGame: Boolean,
-    creatorID: {type: ObjectId, required: true, immutable: true},
-    opponentID: {type: UserSchema, required: false, immutable: true}, // if isComputerGame is True, this field shouldn't exist.
-    creatorIsBlack : Boolean,
+var GameSchema = new Schema({
+    isComputerGame: {type: Boolean},
+    creatorID: {type: Schema.Types.ObjectId, ref: "User", required: true, immutable: true},
+    opponentID: {type: Schema.Types.ObjectId, ref: "User",  required: false, immutable: true}, // if isComputerGame is True, this field shouldn't exist.
+    creatorIsBlack : {type: Boolean},
     moveHistory : [String],
-    currentSFEN: String,
-    timeMade : Date,
-    timeControl : String,
-    minutesPerSide : Number,
-    byoyomiInSeconds : Number,
-    daysPerTurn: Number,
-    dateSinceLastCorrespondence: Date,
-    creatorTimeLeft : Number,
-    opponentTimeLeft: Number,
+    currentSFEN: {type: String},
+    timeMade : {type: Date},
+    timeControl : {type: String},
+    minutesPerSide : {type: Number},
+    byoyomiInSeconds : {type: Number},
+    daysPerTurn: {type: Number},
+    dateSinceLastCorrespondence: {type: Date},
+    creatorTimeLeft : {type: Number},
+    opponentTimeLeft: {type: Number},
 })
-  
+
+
 UserSchema.plugin(passportLocalMongoose);
   
-module.exports = mongoose.model("User", UserSchema);
+module.exports = {GameSchema: mongoose.model("Game", GameSchema), UserSchema: mongoose.model("User", UserSchema)};
