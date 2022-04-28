@@ -25,6 +25,7 @@ function Navbar() {
           setUsername(decoded.username);
         }
         window.addEventListener('storage', getUsername);
+        window.removeEventListener('storage', getUsername);
     }
     useEffect(() => {
         getUsername();

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import './GameOptions.css';
+import jwt_decode from "jwt-decode";
 const axios = require("axios");
 
 
@@ -11,7 +12,15 @@ function GameOptions({callOnFinish}) {
   const [daysPerTurn, setDaysPerTurn] = useState(2);
   const [cpuStrength, setCpuStrenth] = useState(1);
   const [startingSide, setStartingSide] = useState("Random");
-
+  const getUsername = () => {
+    const token = (localStorage.getItem('token'));
+    if(token) {
+      const decoded = jwt_decode(token);
+      return decoded.username;
+    } else {
+      localStorage.getItem("anonID");
+    }
+  }
   const handleSubmit = event => {
     event.preventDefault(); // dunno what this does
     // store game options as a new game in the game db.
@@ -30,7 +39,7 @@ function GameOptions({callOnFinish}) {
     }
     let gameOptions = {
       isComputerGame : true,
-      creatorID : "tempID", // yo how tf do i get this?
+      creatorID : getUsername(), // yo how tf do i get this?
       creatorIsBlack : isStartingBlack,
       moveHistory : [],
       currentSFEN : "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",

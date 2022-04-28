@@ -89,31 +89,17 @@ app.get("/user/:id", verifyJWT , (req,res) => {
         res.json({isPerson: false}); //send database material too
     }
 })
-app.get("/test/", (req,res) => {
-    Game.findOne({creatorIsBlack: true}, (err, game) => {
-        console.log(game);
-    })
+app.get("/game/:id", (req,res)=> {
+    //respond with gamedata no matter what, client will have to prove if it is part of game
 })
 app.post("/create/game", (req,res) => {
-    Game.create(
-        {
-            isComputerGame : true,
-            creatorID: "6223e428329534cee70cb0df",
-            creatorIsBlack : true,
-            moveHistory : [],
-            currentSFEN : "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
-            timeMade : Date.now(),
-            timeControl : "timeControl",
-            minutesPerSide : 1,
-            byoyomiInSeconds : 1,
-            daysPerTurn : 1,
-            dateSinceLastCorrespondence : Date.now(),
-            creatorTimeLeft : 1,
-            opponentTimeLeft : 1
-        }, function(err,doc) {
-            if(err) return console.error(err);
-            res.json({_id: doc._id, message: "succ"});
-        });
+    const games = new Game(req.body)
+        games.save(function (err) {
+            res.json({_id: games._id, error: err});
+            if(err) return err;
+            
+        })
+
 })
 
 const port = process.env.port || 5000;

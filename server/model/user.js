@@ -11,8 +11,8 @@ var UserSchema = new Schema({
 
 var GameSchema = new Schema({
     isComputerGame: {type: Boolean},
-    creatorID: {type: Schema.Types.ObjectId, ref: "User", required: true, immutable: true},
-    opponentID: {type: Schema.Types.ObjectId, ref: "User",  required: false, immutable: true}, // if isComputerGame is True, this field shouldn't exist.
+    creatorUsername: {type: String, required: false, immutable: true},
+    opponentUsername: {type: String, required: false, immutable: true}, // if isComputerGame is True, this field shouldn't exist.
     creatorIsBlack : {type: Boolean},
     moveHistory : [String],
     currentSFEN: {type: String},
