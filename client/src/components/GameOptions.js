@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import './GameOptions.css';
+import { useNavigate } from "react-router";
 import jwt_decode from "jwt-decode";
 const axios = require("axios");
 
@@ -12,6 +13,7 @@ function GameOptions({callOnFinish}) {
   const [daysPerTurn, setDaysPerTurn] = useState(2);
   const [cpuStrength, setCpuStrenth] = useState(1);
   const [startingSide, setStartingSide] = useState("Random");
+  const navigate = useNavigate();
   const getUsername = () => {
     const token = (localStorage.getItem('token'));
     if(token) {
@@ -53,7 +55,7 @@ function GameOptions({callOnFinish}) {
       opponentTimeLeft : timeControl === "Real Time" ? minutesPerSide * 60 + byoyomiInSeconds : daysPerTurn * 86400,
     }
     axios.post("http://localhost:5000/create/game", gameOptions).then((res) => {
-      //success, GameId
+      navigate("/games/" + res._id);
       console.log(res);
     })
   }

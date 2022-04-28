@@ -90,7 +90,8 @@ app.get("/user/:id", verifyJWT , (req,res) => {
     }
 })
 app.get("/game/:id", (req,res)=> {
-    //respond with gamedata no matter what, client will have to prove if it is part of game
+    //res with data, store it into board on <GamePage>
+    //FindByID - mongoose 
 })
 app.post("/create/game", (req,res) => {
     const games = new Game(req.body)
