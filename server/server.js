@@ -28,7 +28,9 @@ const verifyJWT = (req, res, next) => {
 }
 
 //import user model
-const User = require('./model/user');
+const Schemas = require('./model/user.js');
+const User = Schemas.UserSchema;
+const Game = Schemas.GameSchema;
 passport.use((User.createStrategy()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
@@ -70,13 +72,13 @@ app.post('/login', function (req,res,next) {
 
 app.post("/sign-up", (req,res) => {
     Users=new User({email: req.body.email, username : req.body.username});
-        User.register(Users, req.body.password, function(err, user) {
-            if (err) {
-              res.json({success:false, message:"Your account could not be saved. Error: ", err});
-            }else{
-              res.json({success: true, message: "Your account has been saved"});
-            }
-        });
+    User.register(Users, req.body.password, function(err, user) {
+        if (err) {
+            res.json({success:false, message:"Your account could not be saved. Error: ", err});
+        }else{
+            res.json({success: true, message: "Your account has been saved"});
+        }
+    });
 });
 
 app.get("/user/:id", verifyJWT , (req,res) => {
@@ -86,6 +88,19 @@ app.get("/user/:id", verifyJWT , (req,res) => {
     } else {
         res.json({isPerson: false}); //send database material too
     }
+})
+app.get("/game/:id", (req,res)=> {
+    //res with data, store it into board on <GamePage>
+    //FindByID - mongoose 
+})
+app.post("/create/game", (req,res) => {
+    const games = new Game(req.body)
+        games.save(function (err) {
+            res.json({_id: games._id, error: err});
+            if(err) return err;
+            
+        })
+
 })
 
 const port = process.env.port || 5000;
