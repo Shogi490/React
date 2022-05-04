@@ -55,7 +55,7 @@ function GameOptions({callOnFinish}) {
       opponentTimeLeft : timeControl === "Real Time" ? minutesPerSide * 60 + byoyomiInSeconds : daysPerTurn * 86400,
     }
     axios.post("http://localhost:5000/create/game", gameOptions).then((res) => {
-      navigate("/games/" + res._id);
+      navigate("/game/" + res.data._id);
       console.log(res);
     })
   }

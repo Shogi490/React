@@ -9,6 +9,7 @@ import LearnInfo from './components/pages/LearnInfo';
 import PageNotFound from './components/pages/PageNotFound';
 import Login from './components/pages/login';
 import UserProfile from "./components/pages/UserProfile.js"
+import GamePage from './components/pages/GamePage';
 
 function App() { 
   //check localStorage for anonID - if present, continue as normal, else create anonID
@@ -46,7 +47,7 @@ function App() {
           <Route  path="/404" element={<PageNotFound/>}/>
           <Route  path="/login" element={<Login/>}/>
           <Route path='/user/:id' element={<UserProfile/>}/>
-          <Route path='/game/:id' element={<UserProfile/>}/>
+          <Route path='/game/:id' element={<GamePage/>}/>
         </Routes>
       </Router>
 

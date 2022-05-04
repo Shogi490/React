@@ -42,7 +42,8 @@ app.use(bodyParser.json());
 //connecting to db
 const dotenv = require("dotenv").config();
 console.log(process.env.MONGO_URL);
-mongoose.connect(process.env.MONGO_URL, {useNewUrlParser: true}).then(()=> console.log("MongoDB successfully connected")).catch(err => console.log(err));
+const temporaryMongoURL = "mongodb+srv://birdbear:Timmp0Pdsi5@cluster0.azmhy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+mongoose.connect(temporaryMongoURL, {useNewUrlParser: true}).then(()=> console.log("MongoDB successfully connected")).catch(err => console.log(err));
 //connect to db end
 app.get("/404", (req,res) => {
     res.json({message: "404 page not found"});
@@ -89,9 +90,20 @@ app.get("/user/:id", verifyJWT , (req,res) => {
         res.json({isPerson: false}); //send database material too
     }
 })
+
 app.get("/game/:id", (req,res)=> {
     //res with data, store it into board on <GamePage>
     //FindByID - mongoose 
+    Game.findById(req.params.id, ( err, game) => {
+        if( err ) {
+            // do something;
+            console.error(err);
+            res.send("Game Not Found");
+            return;
+        }
+        console.log(`Successfully found game: ${game._id}`);
+        res.send(game.toJSON());
+    });
 })
 app.post("/create/game", (req,res) => {
     const games = new Game(req.body)
