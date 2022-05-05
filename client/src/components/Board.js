@@ -7,13 +7,14 @@ import { parseUsi } from 'shogiops/util';
 import { Shogi } from 'shogiops/shogi';
 
 const unityContext = new UnityContext({
-    loaderUrl: "build/Build/build.loader.js",
-    dataUrl: "build/Build/build.data",
-    frameworkUrl: "build/Build/build.framework.js",
-    codeUrl: "build/Build/build.wasm",
+    loaderUrl: "/build/Build/build.loader.js",
+    dataUrl: "/build/Build/build.data",
+    frameworkUrl: "/build/Build/build.framework.js",
+    codeUrl: "/build/Build/build.wasm",
 });
 
 function Board({ gameInitSettings }) {
+    console.log("meow");
 
     const [isLoaded, setIsLoaded] = useState(false);
     const [game, setGame] = useState(Shogi.default());
@@ -42,7 +43,7 @@ function Board({ gameInitSettings }) {
             setIsLoaded(true);
         });
         // When player clicked on their piece and wants to know where it can move
-        unityContext.on("WantsToMove", function ( square ) {
+        unityContext.on("WantsToMove", function (square) {
             let arr = SquareSetToArray(game.dests(square));
             DisplayArray(arr);
             unityContext.send("GameController", "HighlightMoves", arr);
@@ -61,7 +62,7 @@ function Board({ gameInitSettings }) {
         });
     }, []);
 
-    function HighlightDropDests (roleName){
+    function HighlightDropDests(roleName) {
         let arr = SquareSetToArray(game.dropDests(roleName));
         DisplayArray(arr);
         unityContext.send("GameController", "HighlightDrops", arr);
@@ -70,7 +71,7 @@ function Board({ gameInitSettings }) {
     return (
         <>
             <div className="gameWrapper">
-                <div className="shogiBoard" style={{ visibility : isLoaded ? "visible" : "hidden"}}>
+                <div className="shogiBoard" style={{ visibility: isLoaded ? "visible" : "hidden" }}>
                     <Unity
                         unityContext={unityContext}
                         style={{
@@ -84,18 +85,18 @@ function Board({ gameInitSettings }) {
         </>
     )
 
-    function SquareSetToArray ( squareSet ) {
+    function SquareSetToArray(squareSet) {
         let arr = new Array();
         let i = 0;
-        for(let square of squareSet){
+        for (let square of squareSet) {
             arr[i] = square;
             i++;
         }
         return arr;
     }
 
-    function DisplayArray ( arr ){
-        for(let victim of arr){
+    function DisplayArray(arr) {
+        for (let victim of arr) {
             console.log(victim);
         }
     }

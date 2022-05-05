@@ -9,7 +9,7 @@ function GamePage(props) {
     const [gameData, setGameData] = useState();
 
     useEffect(() => {
-        axios.get("http://localhost:5000/game/" + encodeURI(id)).then((res)=> {
+        axios.get("http://localhost:5000/game/" + encodeURI(id)).then((res) => {
             console.log(`/game/id came back with:`);
             console.log(res.data);
             setGameData(res.data);
@@ -21,9 +21,9 @@ function GamePage(props) {
     console.log("entered Game Page!");
     console.log(`Given ID is ${id}`);
     return (
-      <>
+        <>
             <Board gameInitSettings={gameData}></Board>
-      </>
+        </>
     )
 }
 

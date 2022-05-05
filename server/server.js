@@ -105,6 +105,7 @@ app.get("/game/:id", (req,res)=> {
         res.send(game.toJSON());
     });
 })
+
 app.post("/create/game", (req,res) => {
     const games = new Game(req.body)
         games.save(function (err) {
