@@ -32,12 +32,14 @@ function Board({ gameInitSettings }) {
         });
         // When player clicked on their piece and wants to know where it can move
         unityContext.on("WantsToMove", function (square) {
+            console.log(`RECEIVED "WantsToMove" FROM UNITY: ${square}`);
             let arr = SquareSetToArray(game.dests(square));
             DisplayArray(arr);
-            unityContext.send("GameController", "HighlightMoves", arr);
+            // unityContext.send("GameController", "HighlightMoves", arr);
         });
         // When player clicked on a valid destination for the piece they wanted to MOVE
         unityContext.on("Move", function (usiMove) {
+            console.log(`RECIEVED "Move" FROM UNITY: ${usiMove}`);
             const move = parseUsi(usiMove);
             game.play(move);
             // sendMoveToEnemy?
