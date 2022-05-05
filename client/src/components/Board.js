@@ -14,14 +14,13 @@ const unityContext = new UnityContext({
 });
 
 function Board({ gameInitSettings }) {
-    const [dbRecord, setDbRecord] = useState(gameInitSettings);
-    const [moves, setMoves] = useState(gameInitSettings.moveHistory);
+    const [dbRecord, setDbRecord] = useState(gameInitSettings ? gameInitSettings : undefined);
+    const [moves, setMoves] = useState(gameInitSettings ? gameInitSettings.moveHistory : []);
     const [isLoaded, setIsLoaded] = useState(false);
     const [game, setGame] = useState(Shogi.default());
 
     // Unity Event Responses
     useEffect(function () {
-        _initializeShogiOps();
         // When Unity finishes loading. Initialize Unity.
         unityContext.on("loaded", function () {
             console.log("Unity has finished loading!");
