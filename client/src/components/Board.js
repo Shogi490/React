@@ -14,33 +14,22 @@ const unityContext = new UnityContext({
 });
 
 function Board({ gameInitSettings }) {
-    console.log("meow");
-
+    const [dbRecord, setDbRecord] = useState(gameInitSettings);
+    const [moves, setMoves] = useState(gameInitSettings.moveHistory);
     const [isLoaded, setIsLoaded] = useState(false);
     const [game, setGame] = useState(Shogi.default());
-    // const [moves, setMoves] = useState(game.moveHistory);
-
-    // Obtain game info? Rush was supposed to help w/ this.
-    useEffect(function () {
-        // setGameRecord(gameRecord); or some shit
-        // the board component can only exist if a game is currently ongoing.
-        // we should expect some kind of gameID and find the movehistory of that game.
-        // mayhaps whomever is creating the board should send that to us.
-    }, [])
 
     // Unity Event Responses
     useEffect(function () {
-        // When Unity finishes loading. Initialize Shogiops.
+        _initializeShogiOps();
+        // When Unity finishes loading. Initialize Unity.
         unityContext.on("loaded", function () {
-            // before this, hide Unity or show some kind of loading thing.
             console.log("Unity has finished loading!");
-            // Initialize Unity.
-            // setGame(Shogi.default);
-            // for(let move of dbGameRecord.moves){
-            //     game.move(parseUsi(move));
-            // }
-            // display Unity.
-            setIsLoaded(true);
+            for (let move in moves) {
+                game.play(move);
+            }
+            unityContext.send("GameController", "FromSFEN", makeSfen(game.toSetup()));
+            setIsLoaded(true); // shows Unity.
         });
         // When player clicked on their piece and wants to know where it can move
         unityContext.on("WantsToMove", function (square) {
