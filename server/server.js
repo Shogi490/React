@@ -4,8 +4,9 @@ const bodyParser = require("body-parser");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
 const passportLocal = require("passport-local")
-const app  = express();
+const app = express();
 const cors = require("cors");
+const { Server } = require("socket.io");
 var jwt = require('jsonwebtoken');
 
 app.use(cors());
@@ -13,12 +14,12 @@ app.use(cors());
 //middleware for verification of JWT
 const verifyJWT = (req, res, next) => {
     const token = req.headers["x-access-token"];
-    if(!token) {
+    if (!token) {
         res.send("You are not authorized.");
     } else {
         jwt.verify(token, "TheG0ldenC@tRunsFree", (err, decoded) => {
-            if(err) {
-                res.json({sucess: false, message: "Failed to authenticate token"});
+            if (err) {
+                res.json({ sucess: false, message: "Failed to authenticate token" });
             } else {
                 req.username = decoded.username;
                 next();
@@ -36,65 +37,66 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 //bodyparser middleware
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 //connecting to db
 const dotenv = require("dotenv").config();
 console.log(process.env.MONGO_URL);
-mongoose.connect(process.env.MONGO_URL, {useNewUrlParser: true}).then(()=> console.log("MongoDB successfully connected")).catch(err => console.log(err));
+const temporaryMongoURL = "mongodb+srv://birdbear:Timmp0Pdsi5@cluster0.azmhy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+mongoose.connect(temporaryMongoURL, { useNewUrlParser: true }).then(() => console.log("MongoDB successfully connected")).catch(err => console.log(err));
 //connect to db end
-app.get("/404", (req,res) => {
-    res.json({message: "404 page not found"});
+app.get("/404", (req, res) => {
+    res.json({ message: "404 page not found" });
 })
 
-app.get("/isuserauth", verifyJWT, (req,res) => {
-    res.send({username: req.username});
+app.get("/isuserauth", verifyJWT, (req, res) => {
+    res.send({ username: req.username });
 })
- 
-app.post('/login', function (req,res,next) {
-    passport.authenticate('local', function(err, user, info) {
-        if(err) {
+
+app.post('/login', function (req, res, next) {
+    passport.authenticate('local', function (err, user, info) {
+        if (err) {
             return next(err);
         }
-        if(!user) {
-            return res.send({success: false, message: "Wrong username or password"});
+        if (!user) {
+            return res.send({ success: false, message: "Wrong username or password" });
         }
         req.login(user, loginErr => {
-            if(loginErr) res.json({sucess: false, message: "Login Error"});
+            if (loginErr) res.json({ sucess: false, message: "Login Error" });
             //the jwt secret needs to be an env variable, will add to .env file eventually.
-            const token =  jwt.sign({userId : user._id, username:user.username}, "TheG0ldenC@tRunsFree", {expiresIn: '24h'})
-            return res.send({success: true, message: "Auth succeeded", token: token})
+            const token = jwt.sign({ userId: user._id, username: user.username }, "TheG0ldenC@tRunsFree", { expiresIn: '24h' })
+            return res.send({ success: true, message: "Auth succeeded", token: token })
         })
 
-    })(req,res,next);
+    })(req, res, next);
 });
 
-app.post("/sign-up", (req,res) => {
-    Users=new User({email: req.body.email, username : req.body.username});
-    User.register(Users, req.body.password, function(err, user) {
+app.post("/sign-up", (req, res) => {
+    Users = new User({ email: req.body.email, username: req.body.username });
+    User.register(Users, req.body.password, function (err, user) {
         if (err) {
-            res.json({success:false, message:"Your account could not be saved. Error: ", err});
-        }else{
-            res.json({success: true, message: "Your account has been saved"});
+            res.json({ success: false, message: "Your account could not be saved. Error: ", err });
+        } else {
+            res.json({ success: true, message: "Your account has been saved" });
         }
     });
 });
 
-app.get("/user/:id", verifyJWT , (req,res) => {
+app.get("/user/:id", verifyJWT, (req, res) => {
     let id = req.params.id;
     if (req.username === id) {
-        res.json({isPerson: true}); //send database material too
+        res.json({ isPerson: true }); //send database material too
     } else {
-        res.json({isPerson: false}); //send database material too
+        res.json({ isPerson: false }); //send database material too
     }
 })
 
-app.get("/game/:id", (req,res)=> {
+app.get("/game/:id", (req, res) => {
     //res with data, store it into board on <GamePage>
     //FindByID - mongoose 
     Game.findById(req.params.id, (err, game) => {
-        if( err ) {
+        if (err) {
             // do something;
             res.send("Game Not Found");
             console.error(err);
@@ -105,31 +107,43 @@ app.get("/game/:id", (req,res)=> {
     });
 })
 
-app.get("/game/history/:id", (req,res) => {
+app.get("/game/history/:id", (req, res) => {
     //have to make db query for creatorUsername and opponentUsername
     let username = req.params.id;
-    Game.find({$or: [{creatorID: username}, {opponentUsername: username}]},
-        function(err, docs) {
-            if(err) return console.error(err);
-            if(docs.length == 0) {
-                res.json({error: "No games under this user"});
+    Game.find({ $or: [{ creatorID: username }, { opponentUsername: username }] },
+        function (err, docs) {
+            if (err) return console.error(err);
+            if (docs.length == 0) {
+                res.json({ error: "No games under this user" });
             } else {
                 res.send(docs);
             }
-            
+
         })
 })
 
-app.post("/create/game", (req,res) => {
+app.post("/create/game", (req, res) => {
     const games = new Game(req.body)
-        games.save(function (err) {
-            res.json({_id: games._id, error: err});
-            if(err) return err;
-            
-        })
+    games.save(function (err) {
+        res.json({ _id: games._id, error: err });
+        if (err) return err;
+
+    })
 
 })
 
 const port = process.env.port || 5000;
 
-app.listen(port, () => console.log("Server up and running on port" + port));
+
+
+var server = app.listen(port, () => console.log("Server up and running on port" + port));
+var io = new Server(server, {
+    cors: {
+        origin: '*',
+        methods: ["GET", "POST"]
+    }
+});
+
+io.on("connection", (socket) => {
+    console.log(`a user connected!`);
+});

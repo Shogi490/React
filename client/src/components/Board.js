@@ -13,11 +13,36 @@ const unityContext = new UnityContext({
     codeUrl: "/build/Build/build.wasm",
 });
 
-function Board({ gameInitSettings }) {
+function Board({ gameInitSettings, socket }) {
     const [dbRecord, setDbRecord] = useState(gameInitSettings ? gameInitSettings : undefined);
     const [moves, setMoves] = useState(gameInitSettings ? gameInitSettings.moveHistory : []);
     const [isLoaded, setIsLoaded] = useState(false);
     const [game, setGame] = useState(Shogi.default());
+
+    // Websocket Event Responses
+    useEffect(() => {
+        // const eventListener = (message) => {};
+        const onConnect = (socket) => {
+            console.log("websocket has successfully connected!");
+        }
+        const onMove = (socket) => {
+
+        }
+        const onGameOver = (socket) => {
+
+        }
+        // onProposeDraw
+        // onProposeExtraTime
+        // onProposeTakeback
+
+        // socket.on('eventName', eventListener);
+        socket.on("connection", onConnect);
+
+        return () => {
+            // socket.off('eventName', eventListener);
+            socket.off(onConnect);
+        }
+    }, [socket])
 
     // Unity Event Responses
     useEffect(function () {
@@ -35,6 +60,7 @@ function Board({ gameInitSettings }) {
             console.log(`RECEIVED "WantsToMove" FROM UNITY: ${square}`);
             let arr = SquareSetToArray(game.dests(square));
             DisplayArray(arr);
+            socket.emit('test', "test");
             // unityContext.send("GameController", "HighlightMoves", arr);
         });
         // When player clicked on a valid destination for the piece they wanted to MOVE

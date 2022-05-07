@@ -1,7 +1,5 @@
 import React from 'react'
 import Board from '../Board';
-import { useNavigate } from 'react-router-dom';
-import { useState } from "react";
 import GameOptions from '../GameOptions';
 
 function Play() {
