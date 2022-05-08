@@ -22,6 +22,30 @@ function UserProfile() {
         <>
             <h1>{id}'s Profile</h1>
             <h2>You are {(isPerson === true) ? id : "not " + id}</h2>
+            <form>
+                {(isPerson === true) ? Skin : 
+                    <input type="radio" name="skin" id="chess" value="chess"></input> ,
+                    <input type="radio" name="skin" id="navy" value="fantasy"></input> ,
+                    <input type="radio" name="skin" id="fantasy" value="fantasy"></input> ,
+                    <input type="radio" name="skin" id="shogi" value="shogi"></input> } 
+
+            
+
+                if(document.getElementById('chess').checked) {skin = "chess"}
+                if(document.getElementById('navy').checked) {skin = "navy"}
+                if(document.getElementById('fantasy').checked) {skin = "fantasy"}
+                if(document.getElementById('shogi').checked) {skin = "shogi"}
+            
+                
+                localStorage.setItem('skin');
+                
+                  
+            </form>
+                    
+                
+         
+            
+
         </>
     )
 }
