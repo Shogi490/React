@@ -24,6 +24,7 @@ function Board({ gameInitSettings }) {
     PieceSkin(function () {
         
         unityContext.send("Tile", "GetSkin", skin);
+        unityContext.send("Droppable", "GetSkin", skin);
     });
 
     // Unity Event Responses
