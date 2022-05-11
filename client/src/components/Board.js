@@ -22,10 +22,15 @@ function Board({ gameInitSettings, socket }) {
     // Websocket Event Responses
     useEffect(() => {
         // const eventListener = (message) => {};
-        const onConnect = (socket) => {
+        const onConnection = (socket) => {
             console.log("websocket has successfully connected!");
         }
-        const onMove = (socket) => {
+        const onMoved = (gameDocument) => {
+            setDbRecord(gameDocument);
+            setMoves(gameDocument.moveHistory);
+            const usiString = gameDocument.moveHistory[gameDocument.moveHistory.length - 1];
+            // server has made sure that the right player performed this move on their turn.
+            game.play(usiString);
 
         }
         const onGameOver = (socket) => {
@@ -36,11 +41,15 @@ function Board({ gameInitSettings, socket }) {
         // onProposeTakeback
 
         // socket.on('eventName', eventListener);
-        socket.on("connection", onConnect);
+        socket.on("connection", onConnection);
+        socket.on("Moved", onMoved);
+        socket.on("GameOver", onGameOver);
 
         return () => {
             // socket.off('eventName', eventListener);
-            socket.off(onConnect);
+            socket.off("connection", onConnection)
+            socket.off("Moved", onMoved);
+            socket.off("GameOver", onGameOver);
         }
     }, [socket])
 
@@ -60,21 +69,29 @@ function Board({ gameInitSettings, socket }) {
             console.log(`RECEIVED "WantsToMove" FROM UNITY: ${square}`);
             let arr = SquareSetToArray(game.dests(square));
             DisplayArray(arr);
-            socket.emit('test', "test");
+            // socket.emit('test', "test");
             // unityContext.send("GameController", "HighlightMoves", arr);
         });
         // When player clicked on a valid destination for the piece they wanted to MOVE
         unityContext.on("Move", function (usiMove) {
             console.log(`RECIEVED "Move" FROM UNITY: ${usiMove}`);
             const move = parseUsi(usiMove);
-            game.play(move);
-            // sendMoveToEnemy?
+            if (game.isLegal(move)) {
+                // game.play(move);
+                socket.emit("Move", usiMove, makeSfen(game.toSetup()));
+            } else {
+                alert("You have played an illegal move!");
+            }
         });
         // When player clicked in a valid destination for a piece they wanted to DROP
         unityContext.on("Drop", function (usiMove) {
             const move = parseUsi(usiMove);
-            game.play(move);
-            // sendMoveToEnemy?
+            if (game.isLegal(move)) {
+                // game.play(move);
+                socket.emit("Move", usiMove, makeSfen(game.toSetup()));
+            } else {
+                alert("You have played an illegal move!");
+            }
         });
     }, []);
 

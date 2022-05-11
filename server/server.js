@@ -9,7 +9,6 @@ const cors = require("cors");
 const { Server } = require("socket.io");
 var jwt = require('jsonwebtoken');
 import "gameManager.js";
-import Lobby from "./gameManager.js";
 
 app.use(cors());
 
@@ -146,30 +145,69 @@ var io = new Server(server, {
     }
 });
 
-// const gameLobbies = {};
+const gameLobbies = {};
 
 io.on("connection", (socket) => {
     console.log(`a user connected!`);
-    // const OnInit = (gameID, jwtOrANON) => {
-    //     // get username
-    //     jwt.verify(token, "TheG0ldenC@tRunsFree", (err, decoded) => {
-    //         if (err) {
-    //             res.json({ sucess: false, message: "Failed to authenticate token" });
-    //         } else {
-    //             req.username = decoded.username;
-    //             next();
-    //         }
-    //     })
-    //     Game.findById(req.params.id, (err, game) => {
-    //         if (err) {
-    //             // do something;
-    //             console.error(err);
-    //             res.send("Game Not Found");
-    //             return;
-    //         }
-    //         console.log(`Successfully found game: ${game._id}`);
-    //         res.send(game.toJSON());
-    //     });
-    //     gameLobbies[gameID] = new Lobby(socket, Game)
-    // }
+    const OnInit = (gameID, jwtOrANON) => {
+        // first, see if there is a lobby for this game already
+        if (gameLobbies[gameID] != undefined) {
+            // get username
+            const username = await _decipherJWTOrAnon(jwtOrANON);
+            gameLobbies[gameID].AddUser(username, socket);
+        }
+
+        // there isn't a lobby for this game at the moment, gotta make one!
+
+        // verify the game exists.
+        const gameDocument = await _getGameDocument(gameID);
+
+        if (gameDocument === undefined) {
+            console.error(`A user tried to go to a nonexistent game!`);
+            socket.emit("InvalidGame");
+            return;
+        }
+
+        // At this point, a user has attempted to join a live game, and we've found that game!
+        // Now we have to identify the user and grant him move permission if he's a participant of the game
+        // otherwise, they'll only be receiving move updates from the actual participants.
+        // this is handled within gameManager.js's Lobby class.
+
+        // get username
+        const username = await _decipherJWTOrAnon(jwtOrANON);
+
+        // create a lobby
+        gameLobbies[gameID] = new Lobby(username, socket, gameDocument);
+
+        const OnDisconnect = () => {
+            const theLobby = gameLobbies[gameID];
+            console.log(`Websocket connection to User ${username} has been disconnected!`);
+            // remove user from lobby. 
+            theLobby.RemoveUser(username);
+            // If lobby is now empty, delete the lobby.
+            if (!theLobby.HasListeners()) {
+                delete gameLobbies[gameID];
+            }
+        }
+        socket.on("disconnect", OnDisconnect);
+
+    }
+    socket.on("Init", OnInit);
 });
+
+const _decipherJWTOrAnon = async function (victim) {
+    jwt.verify(victim, "TheG0ldenC@tRunsFree", (err, decoded) => {
+        return err ? victim : decoded.username;
+    });
+}
+
+const _getGameDocument = async function (gameID) {
+    Game.findById(gameID, (err, game) => {
+        if (err) {
+            // do something;
+            console.error(err);
+            res.send("Game Not Found");
+            return undefined;
+        }
+    });
+}
