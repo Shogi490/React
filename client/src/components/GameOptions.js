@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './GameOptions.css';
 import { useNavigate } from "react-router";
 import jwt_decode from "jwt-decode";
@@ -14,21 +14,21 @@ function GameOptions({callOnFinish}) {
   const [cpuStrength, setCpuStrenth] = useState(1);
   const [startingSide, setStartingSide] = useState("Random");
   const navigate = useNavigate();
-  const getUsername = () => {
-    const token = (localStorage.getItem('token'));
-    if(token) {
-      const decoded = jwt_decode(token);
-      return decoded.username;
-    } else {
-      localStorage.getItem("anonID");
-    }
-  }
+
   const handleSubmit = event => {
     event.preventDefault(); // dunno what this does
     // store game options as a new game in the game db.
     // if the game is a PvP game we have to wait until both players are ready before doing the above.
     // otherwise it's a CPU game, in which case it's OK to throw the game into the db and start.
     // for now the second options is always the case.
+    let username;
+    const token = (localStorage.getItem('token'));
+    if(token) {
+      const decoded = jwt_decode(token);
+      username = decoded.username;
+    } else {
+      username = localStorage.getItem('anonID');
+    }
     if(timeControl === "Real Time" && minutesPerSide === 0 && byoyomiInSeconds === 0){
       alert("Invalid Time Control!");
       return;
@@ -41,7 +41,7 @@ function GameOptions({callOnFinish}) {
     }
     let gameOptions = {
       isComputerGame : true,
-      creatorID : getUsername(), // yo how tf do i get this?
+      creatorID : username,
       creatorIsBlack : isStartingBlack,
       moveHistory : [],
       currentSFEN : "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
