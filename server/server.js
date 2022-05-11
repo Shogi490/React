@@ -8,6 +8,8 @@ const app = express();
 const cors = require("cors");
 const { Server } = require("socket.io");
 var jwt = require('jsonwebtoken');
+import "gameManager.js";
+import Lobby from "./gameManager.js";
 
 app.use(cors());
 
@@ -144,6 +146,30 @@ var io = new Server(server, {
     }
 });
 
+// const gameLobbies = {};
+
 io.on("connection", (socket) => {
     console.log(`a user connected!`);
+    // const OnInit = (gameID, jwtOrANON) => {
+    //     // get username
+    //     jwt.verify(token, "TheG0ldenC@tRunsFree", (err, decoded) => {
+    //         if (err) {
+    //             res.json({ sucess: false, message: "Failed to authenticate token" });
+    //         } else {
+    //             req.username = decoded.username;
+    //             next();
+    //         }
+    //     })
+    //     Game.findById(req.params.id, (err, game) => {
+    //         if (err) {
+    //             // do something;
+    //             console.error(err);
+    //             res.send("Game Not Found");
+    //             return;
+    //         }
+    //         console.log(`Successfully found game: ${game._id}`);
+    //         res.send(game.toJSON());
+    //     });
+    //     gameLobbies[gameID] = new Lobby(socket, Game)
+    // }
 });
