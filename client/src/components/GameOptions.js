@@ -5,7 +5,7 @@ import jwt_decode from "jwt-decode";
 const axios = require("axios");
 
 
-function GameOptions({callOnFinish}) {
+function GameOptions({ callOnFinish }) {
   const [isPvP, setisPvP] = useState(false);
   const [timeControl, setTimeControl] = useState("Real Time");
   const [minutesPerSide, setMinutesPerSide] = useState(5);
@@ -23,36 +23,36 @@ function GameOptions({callOnFinish}) {
     // for now the second options is always the case.
     let username;
     const token = (localStorage.getItem('token'));
-    if(token) {
+    if (token) {
       const decoded = jwt_decode(token);
       username = decoded.username;
     } else {
       username = localStorage.getItem('anonID');
     }
-    if(timeControl === "Real Time" && minutesPerSide === 0 && byoyomiInSeconds === 0){
+    if (timeControl === "Real Time" && minutesPerSide === 0 && byoyomiInSeconds === 0) {
       alert("Invalid Time Control!");
       return;
     }
     setisPvP(false);
     // send to db
     let isStartingBlack = (startingSide === "Black");
-    if(startingSide === "Random"){
+    if (startingSide === "Random") {
       isStartingBlack = Math.random() < 0.5 ? true : false;
     }
     let gameOptions = {
-      isComputerGame : true,
-      creatorID : username,
-      creatorIsBlack : isStartingBlack,
-      moveHistory : [],
-      currentSFEN : "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
-      timeMade : Date.now(),
-      timeControl : timeControl,
-      minutesPerSide : minutesPerSide,
-      byoyomiInSeconds : byoyomiInSeconds,
-      daysPerTurn : daysPerTurn,
-      dateSinceLastCorrespondence : Date.now(),
-      creatorTimeLeft : timeControl === "Real Time" ? minutesPerSide * 60 + byoyomiInSeconds : daysPerTurn * 86400,
-      opponentTimeLeft : timeControl === "Real Time" ? minutesPerSide * 60 + byoyomiInSeconds : daysPerTurn * 86400,
+      isComputerGame: true,
+      creatorID: username,
+      creatorIsBlack: isStartingBlack,
+      moveHistory: [],
+      currentSFEN: "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+      timeMade: Date.now(),
+      timeControl: timeControl,
+      minutesPerSide: minutesPerSide,
+      byoyomiInSeconds: byoyomiInSeconds,
+      daysPerTurn: daysPerTurn,
+      dateSinceLastCorrespondence: Date.now(),
+      creatorTimeLeft: timeControl === "Real Time" ? minutesPerSide * 60 * 1000 : daysPerTurn * 86400 * 1000,
+      opponentTimeLeft: timeControl === "Real Time" ? minutesPerSide * 60 * 1000 : daysPerTurn * 86400 * 1000,
     }
     axios.post("http://localhost:5000/create/game", gameOptions).then((res) => {
       navigate("/game/" + res.data._id);
@@ -62,62 +62,62 @@ function GameOptions({callOnFinish}) {
 
   return (
     <div className="game-options-overlay">
-      <div className="game-options-wrapper" onClick={()=>{}}>
+      <div className="game-options-wrapper" onClick={() => { }}>
         <h1>Setup Game</h1>
-        <form className="game-options-form" onSubmit = {handleSubmit}>
-          <label className = "selector">
+        <form className="game-options-form" onSubmit={handleSubmit}>
+          <label className="selector">
             Against
-          <select value={isPvP} onChange={setisPvP}>
-            <option value="true">Players</option>
-            <option value="false">Computer</option>
-          </select>
+            <select value={isPvP} onChange={setisPvP}>
+              <option value="true">Players</option>
+              <option value="false">Computer</option>
+            </select>
           </label>
-          <div className = "time-control">
+          <div className="time-control">
             <div className="game-option">
               <label className="option-selector">
                 Time control
-                <select value={timeControl} onChange={(e)=>setTimeControl(e.target.value)}>
+                <select value={timeControl} onChange={(e) => setTimeControl(e.target.value)}>
                   <option value="Real Time">Real Time</option>
                   <option value="Correspondence">Correspondence</option>
                 </select>
               </label>
             </div>
-            {timeControl === "Real Time" && 
+            {timeControl === "Real Time" &&
               <div className="game-option">
                 <label className="range-selector>">
-                  Minutes per side: {minutesPerSide} <br/>
-                  <input type="range" min="1" max="180" value={minutesPerSide} onChange={(e)=>setMinutesPerSide(e.target.value)}/>
+                  Minutes per side: {minutesPerSide} <br />
+                  <input type="range" min="1" max="180" value={minutesPerSide} onChange={(e) => setMinutesPerSide(e.target.value)} />
                 </label>
               </div>
             }
-            {timeControl === "Real Time" && 
+            {timeControl === "Real Time" &&
               <div className="game-option">
                 <label className="range-selector>">
-                  Byoyomi In Seconds: {byoyomiInSeconds} <br/>
-                  <input type="range" min="1" max="180" value={byoyomiInSeconds} onChange={(e)=>setByoyomiInSeconds(e.target.value)}/>
+                  Byoyomi In Seconds: {byoyomiInSeconds} <br />
+                  <input type="range" min="1" max="180" value={byoyomiInSeconds} onChange={(e) => setByoyomiInSeconds(e.target.value)} />
                 </label>
               </div>
             }
-            {timeControl === "Correspondence" && 
+            {timeControl === "Correspondence" &&
               <div className="game-option">
                 <label className="range-selector>">
                   Days per turn: {daysPerTurn}
-                  <input type="range" min="1" max="14" value={daysPerTurn} onChange={(e)=>setDaysPerTurn(e.target.value)}/>
+                  <input type="range" min="1" max="14" value={daysPerTurn} onChange={(e) => setDaysPerTurn(e.target.value)} />
                 </label>
               </div>
             }
           </div>
-          {isPvP === false && 
+          {isPvP === false &&
             <div className="game-option">
               <label className="range-selector>">
-                Strength: {cpuStrength} <br/>
-                <input type="range" min="1" max="8" value={cpuStrength} onChange={(e)=>setCpuStrenth(e.target.value)}/>
+                Strength: {cpuStrength} <br />
+                <input type="range" min="1" max="8" value={cpuStrength} onChange={(e) => setCpuStrenth(e.target.value)} />
               </label>
             </div>
           }
           <label className="option-selector">
             Starting Side
-            <select value={startingSide} onChange={(e)=>setStartingSide(e.target.value)}>
+            <select value={startingSide} onChange={(e) => setStartingSide(e.target.value)}>
               <option value="Black">Black</option>
               <option value="Random">Random</option>
               <option value="White">White</option>
