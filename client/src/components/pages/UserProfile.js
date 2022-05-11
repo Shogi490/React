@@ -5,6 +5,7 @@ const axios = require("axios");
 function UserProfile() {
     let { id } = useParams();
     const [isPerson, setIsPerson] = useState(false);
+    const [Skin, setSkin] = useState("skin-selector");
     useEffect(() => {
         axios.get("http://localhost:5000/user/" + encodeURI(id), {
             headers: {
@@ -23,21 +24,23 @@ function UserProfile() {
             <h1>{id}'s Profile</h1>
             <h2>You are {(isPerson === true) ? id : "not " + id}</h2>
             <form>
-                {(isPerson === true) ? Skin : 
-                    <input type="radio" name="skin" id="chess" value="chess"></input> ,
-                    <input type="radio" name="skin" id="navy" value="fantasy"></input> ,
-                    <input type="radio" name="skin" id="fantasy" value="fantasy"></input> ,
-                    <input type="radio" name="skin" id="shogi" value="shogi"></input> } 
+                <label className="skin-selector">
+                    Skin Options
+                    <select value={Skin} onChange={(e)=>setSkin(e.target.value)}>
+                        <option value="chess">chess</option>
+                        <option value="navy">navy</option>
+                        <option value="fantasy">fantasy</option>
+                        <option value="shogi">shogi</option>
+                    </select>
+                </label>
 
-            
-
-                if(document.getElementById('chess').checked) {skin = "chess"}
-                if(document.getElementById('navy').checked) {skin = "navy"}
-                if(document.getElementById('fantasy').checked) {skin = "fantasy"}
-                if(document.getElementById('shogi').checked) {skin = "shogi"}
-            
+                if(document.getElementByValue('chess').selected) {Skin = "chess"}
+                if(document.getElementByValue('navy').selected) {Skin = "navy"}
+                if(document.getElementByValue('fantasy').selected) {Skin = "fantasy"}
+                if(document.getElementByValue('shogi').selected) {Skin = "shogi"}
                 
-                localStorage.setItem('skin');
+
+                localStorage.setItem("Skin", SKINVARIABLE);
                 
                   
             </form>

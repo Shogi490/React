@@ -20,11 +20,11 @@ function Board({ gameInitSettings }) {
     const [game, setGame] = useState(Shogi.default());
     // unity sent skin choice
     
-    const skin = (localStorage.getItem('skin'));
+    const Skin = (localStorage.getItem("Skin"));
     PieceSkin(function () {
         
-        unityContext.send("Tile", "GetSkin", skin);
-        unityContext.send("Droppable", "GetSkin", skin);
+        unityContext.send("Tile", "SetSkin", Skin);
+        unityContext.send("Droppable", "SetSkin", Skin);
     });
 
     // Unity Event Responses
