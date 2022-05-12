@@ -15,7 +15,7 @@ const unityContext = new UnityContext({
 
 function Board({ gameInitSettings }) {
     const [dbRecord, setDbRecord] = useState(gameInitSettings ? gameInitSettings : undefined);
-    const [moves, setMoves] = useState(["move1", "move2", "move3"]); //dummy data
+    const [moves, setMoves] = useState(gameInitSettings ? gameInitSettings.moveHistory : []); //dummy data
     const [isLoaded, setIsLoaded] = useState(false);
     const [game, setGame] = useState(Shogi.default());
 
