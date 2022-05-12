@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\client",
+    "\\client\\public",
+    "\\client\\public\\build",
+    "\\client\\public\\build\\Build",
+    "\\client\\public\\build\\TemplateData",
+    "\\client\\src",
+    "\\client\\src\\components"
+  ],
+  "SelectedNode": "\\client\\public\\build\\Build\\build.data",
+  "PreviewInSolutionExplorer": false
+}
