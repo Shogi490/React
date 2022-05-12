@@ -6,6 +6,8 @@ import { makeSfen } from "shogiops/sfen";
 import { parseUsi } from 'shogiops/util';
 import { Shogi } from 'shogiops/shogi';
 
+import Table from "./Table/Table";
+
 const unityContext = new UnityContext({
     loaderUrl: "/build/Build/build.loader.js",
     dataUrl: "/build/Build/build.data",
@@ -15,10 +17,13 @@ const unityContext = new UnityContext({
 
 function Board({ gameInitSettings }) {
     const [dbRecord, setDbRecord] = useState(gameInitSettings ? gameInitSettings : undefined);
-    const [moves, setMoves] = useState(gameInitSettings ? gameInitSettings.moveHistory : []); //dummy data
+    const [moves, setMoves] = useState(["move1", "move2", "move3"]); //dummy data
     const [isLoaded, setIsLoaded] = useState(false);
     const [game, setGame] = useState(Shogi.default());
 
+    const colNames = ['Player','Move'];
+    const playerIs = ['P1'];
+    
     // Unity Event Responses
     useEffect(function () {
         // When Unity finishes loading. Initialize Unity.
@@ -74,8 +79,10 @@ function Board({ gameInitSettings }) {
                 </div>
                 <div className="moveTracker">
                 <h1>Move History</h1> 
-                 <div className = "array">
-                    <h3>{moves}</h3>
+                 <div className = "array"> 
+
+                     <Table list={moves} playerIs = {playerIs} colNames = {colNames}/>
+
                  </div>
                 </div>
             </div>
