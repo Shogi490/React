@@ -61,15 +61,22 @@ function Board({ gameInitSettings, socket }) {
             for (let move in moves) {
                 game.play(move);
             }
-            unityContext.send("GameController", "FromSFEN", makeSfen(game.toSetup()));
+            console.log(`attempting to set player`);
+            unityContext.send("GameController", "SetPlayerIsWhite", !dbRecord.creatorIsBlack);
+            console.log(`attempting to set board`);
+            console.log(`sending ${makeSfen(game.toSetup())}`);
+            unityContext.send("GameController", "boardFromSfen", makeSfen(game.toSetup()));
             setIsLoaded(true); // shows Unity.
         });
         // When player clicked on their piece and wants to know where it can move
         unityContext.on("WantsToMove", function (square) {
             console.log(`RECEIVED "WantsToMove" FROM UNITY: ${square}`);
-            let arr = SquareSetToArray(game.dests(square));
+            let arr = SquareSetToArray(game.dests(square + 0));
             DisplayArray(arr);
             // socket.emit('test', "test");
+            arr.forEach((square) => {
+                unityContext.send("GameController", "HighlightMove", square);
+            })
             // unityContext.send("GameController", "HighlightMoves", arr);
         });
         // When player clicked on a valid destination for the piece they wanted to MOVE
@@ -82,6 +89,17 @@ function Board({ gameInitSettings, socket }) {
             } else {
                 alert("You have played an illegal move!");
             }
+
+        });
+        // When player clicked on their piece and wants to know where it can move
+        unityContext.on("WantsToDrop", function (pieceName) {
+            console.log(`RECEIVED "WantsToDrop" FROM UNITY: ${pieceName}`);
+            let arr = SquareSetToArray(game.dropDests(pieceName));
+            DisplayArray(arr);
+            // socket.emit('test', "test");
+            arr.forEach((square) => {
+                unityContext.send("GameController", "HighlightDrop", square);
+            });
         });
         // When player clicked in a valid destination for a piece they wanted to DROP
         unityContext.on("Drop", function (usiMove) {

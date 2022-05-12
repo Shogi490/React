@@ -8,7 +8,7 @@ const app = express();
 const cors = require("cors");
 const { Server } = require("socket.io");
 var jwt = require('jsonwebtoken');
-import "gameManager.js";
+const { Lobby } = require("./gameManager.js");
 
 app.use(cors());
 
@@ -147,20 +147,22 @@ var io = new Server(server, {
 
 const gameLobbies = {};
 
-io.on("connection", (socket) => {
+io.on("connection", async (socket) => {
     console.log(`a user connected!`);
     const OnInit = (gameID, jwtOrANON) => {
         // first, see if there is a lobby for this game already
+        console.log(`step 1!`);
         if (gameLobbies[gameID] != undefined) {
             // get username
-            const username = await _decipherJWTOrAnon(jwtOrANON);
+            const username = _decipherJWTOrAnon(jwtOrANON);
             gameLobbies[gameID].AddUser(username, socket);
         }
 
         // there isn't a lobby for this game at the moment, gotta make one!
 
+        console.log(`step 2!`);
         // verify the game exists.
-        const gameDocument = await _getGameDocument(gameID);
+        const gameDocument = _getGameDocument(gameID);
 
         if (gameDocument === undefined) {
             console.error(`A user tried to go to a nonexistent game!`);
@@ -168,14 +170,16 @@ io.on("connection", (socket) => {
             return;
         }
 
+        console.log(`step 3!`);
         // At this point, a user has attempted to join a live game, and we've found that game!
         // Now we have to identify the user and grant him move permission if he's a participant of the game
         // otherwise, they'll only be receiving move updates from the actual participants.
         // this is handled within gameManager.js's Lobby class.
 
         // get username
-        const username = await _decipherJWTOrAnon(jwtOrANON);
+        const username = _decipherJWTOrAnon(jwtOrANON);
 
+        console.log(`step 4!`);
         // create a lobby
         gameLobbies[gameID] = new Lobby(username, socket, gameDocument);
 
@@ -190,18 +194,20 @@ io.on("connection", (socket) => {
             }
         }
         socket.on("disconnect", OnDisconnect);
+        console.log(`step 5!`);
 
     }
     socket.on("Init", OnInit);
+    console.log(`step 0!`);
 });
 
-const _decipherJWTOrAnon = async function (victim) {
+const _decipherJWTOrAnon = function (victim) {
     jwt.verify(victim, "TheG0ldenC@tRunsFree", (err, decoded) => {
         return err ? victim : decoded.username;
     });
 }
 
-const _getGameDocument = async function (gameID) {
+const _getGameDocument = function (gameID) {
     Game.findById(gameID, (err, game) => {
         if (err) {
             // do something;

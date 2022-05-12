@@ -34,7 +34,7 @@ function GamePage(props) {
     console.log(`Given ID is ${id}`);
     return (
         <>
-            {socket ? (
+            {socket && gameData ? (
                 <Board gameInitSettings={gameData} socket={socket}></Board>
             ) : (
                 <div> Not Connected </div>
