@@ -31,12 +31,12 @@ function App() {
     localStorage.setItem('anonID', generateAnonID());
     }
 
-    generateSkin() {
+    function generateSkin() {
         var Skin = "chess";
         return Skin;
     }
     
-    if (!localStorage.getItem("Skin") && !localStorage.getItem("token")) {
+    if (!localStorage.getItem("Skin")) {
         localStorage.setItem('Skin', generateSkin());
     }
 
