@@ -6,6 +6,8 @@ import { makeSfen } from "shogiops/sfen";
 import { parseUsi } from 'shogiops/util';
 import { Shogi } from 'shogiops/shogi';
 
+import Table from "./Table/Table";
+
 const unityContext = new UnityContext({
     loaderUrl: "/build/Build/build.loader.js",
     dataUrl: "/build/Build/build.data",
@@ -15,9 +17,13 @@ const unityContext = new UnityContext({
 
 function Board({ gameInitSettings }) {
     const [dbRecord, setDbRecord] = useState(gameInitSettings ? gameInitSettings : undefined);
-    const [moves, setMoves] = useState(gameInitSettings ? gameInitSettings.moveHistory : []);
+    const [moves, setMoves] = useState(["move1", "move2", "move3"]); //dummy data
     const [isLoaded, setIsLoaded] = useState(false);
     const [game, setGame] = useState(Shogi.default());
+
+    const colNames = ['Player','Move'];
+    const playerIs = ['P1'];
+    
     // unity sent skin choice
     
     const Skin = (localStorage.getItem("Skin"));
@@ -32,7 +38,7 @@ function Board({ gameInitSettings }) {
         unityContext.on("loaded", function () {
             console.log("Unity has finished loading!");
             for (let move in moves) {
-                game.play(move);
+                //game.play(move);
             }
             unityContext.send("GameController", "FromSFEN", makeSfen(game.toSetup()));
 
@@ -58,7 +64,8 @@ function Board({ gameInitSettings }) {
             game.play(move);
             // sendMoveToEnemy?
         });
-    }, []);
+        console.log(moves);
+    },[]);
 
     function HighlightDropDests(roleName) {
         let arr = SquareSetToArray(game.dropDests(roleName));
@@ -68,6 +75,7 @@ function Board({ gameInitSettings }) {
 
     return (
         <>
+
             <div className="gameWrapper">
                 <div className="shogiBoard" style={{ visibility: isLoaded ? "visible" : "hidden" }}>
                     <Unity
@@ -78,7 +86,14 @@ function Board({ gameInitSettings }) {
                         }}
                     />
                 </div>
-                <div className="moveTracker"></div>
+                <div className="moveTracker">
+                <h1>Move History</h1> 
+                 <div className = "array"> 
+
+                     <Table list={moves} playerIs = {playerIs} colNames = {colNames}/>
+
+                 </div>
+                </div>
             </div>
         </>
     )
