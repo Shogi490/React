@@ -48,7 +48,7 @@ function UserProfile() {
                 {(gameHistory === undefined) ? <h2>No games found</h2> : gameHistory.map(item => {
                     return <List sx={{width: "100%", maxWidth: 1450, margin: "auto", textAlign: "center"}}>
                         <ListItem sx={{textAlign: "center"}}>
-                            {(item.isComputerGame) ? <ListItemText key={item.isComputerGame}>Versus: AI</ListItemText> : <ListItemText>Versus: Player</ListItemText>}
+                            {(item.isComputerGame) ? <ListItemText key={item.isComputerGame}>Versus: AI</ListItemText> : <ListItemText>Versus: {item.opponentUsername}</ListItemText>}
                             <ListItemText>Date Created: {new Date(item.timeMade).toDateString()}</ListItemText>
                             <ListItemText >Last Move: {new Date(item.dateSinceLastCorrespondence).toDateString()}</ListItemText>
                             {(item.winnerID === undefined || item.winningReason === undefined) ? <ListItemText>Active</ListItemText> : <ListItemText>Completed</ListItemText>}
