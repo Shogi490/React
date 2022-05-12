@@ -24,6 +24,8 @@ var GameSchema = new Schema({
     dateSinceLastCorrespondence: {type: Date},
     creatorTimeLeft : {type: Number},
     opponentTimeLeft: {type: Number},
+    winnerID: {type: String},
+    winningReason: {type: String},
 })
 
 

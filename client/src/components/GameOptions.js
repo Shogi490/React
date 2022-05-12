@@ -6,6 +6,7 @@ const axios = require("axios");
 
 
 function GameOptions({callOnFinish}) {
+  const [opponentsUsername, setOpponentsUsername] = useState();
   const [isPvP, setisPvP] = useState(false);
   const [timeControl, setTimeControl] = useState("Real Time");
   const [minutesPerSide, setMinutesPerSide] = useState(5);
@@ -13,8 +14,11 @@ function GameOptions({callOnFinish}) {
   const [daysPerTurn, setDaysPerTurn] = useState(2);
   const [cpuStrength, setCpuStrenth] = useState(1);
   const [startingSide, setStartingSide] = useState("Random");
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
+  function changePvP() {
+    setisPvP(!isPvP);
+  }
   const handleSubmit = event => {
     event.preventDefault(); // dunno what this does
     // store game options as a new game in the game db.
@@ -33,15 +37,15 @@ function GameOptions({callOnFinish}) {
       alert("Invalid Time Control!");
       return;
     }
-    setisPvP(false);
     // send to db
     let isStartingBlack = (startingSide === "Black");
     if(startingSide === "Random"){
       isStartingBlack = Math.random() < 0.5 ? true : false;
     }
     let gameOptions = {
-      isComputerGame : true,
+      isComputerGame : !isPvP,
       creatorID : username,
+      opponentUsername: opponentsUsername,
       creatorIsBlack : isStartingBlack,
       moveHistory : [],
       currentSFEN : "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
@@ -62,12 +66,12 @@ function GameOptions({callOnFinish}) {
 
   return (
     <div className="game-options-overlay">
-      <div className="game-options-wrapper" onClick={()=>{}}>
+      <div className="game-options-wrapper">
         <h1>Setup Game</h1>
         <form className="game-options-form" onSubmit = {handleSubmit}>
           <label className = "selector">
             Against
-          <select value={isPvP} onChange={setisPvP}>
+          <select value={isPvP} onChange={changePvP}>
             <option value="true">Players</option>
             <option value="false">Computer</option>
           </select>
@@ -107,14 +111,22 @@ function GameOptions({callOnFinish}) {
               </div>
             }
           </div>
-          {isPvP === false && 
+          <div className='isPvP'>
+          {(isPvP === false) ?  
             <div className="game-option">
               <label className="range-selector>">
                 Strength: {cpuStrength} <br/>
                 <input type="range" min="1" max="8" value={cpuStrength} onChange={(e)=>setCpuStrenth(e.target.value)}/>
               </label>
             </div>
+            : 
+            <div>
+              <label> <p>Opponent's Username:</p>
+              <input type="text" onChange={e => setOpponentsUsername(e.target.value)} required />
+              </label>
+            </div>
           }
+          </div>
           <label className="option-selector">
             Starting Side
             <select value={startingSide} onChange={(e)=>setStartingSide(e.target.value)}>
