@@ -29,7 +29,16 @@ function App() {
   
   if(!localStorage.getItem("anonID") && !localStorage.getItem("token")) {
     localStorage.setItem('anonID', generateAnonID());
-  }
+    }
+
+    generateSkin() {
+        var Skin = "chess";
+        return Skin;
+    }
+    
+    if (!localStorage.getItem("Skin") && !localStorage.getItem("token")) {
+        localStorage.setItem('Skin', generateSkin());
+    }
 
   return (
     <>

@@ -18,6 +18,14 @@ function Board({ gameInitSettings }) {
     const [moves, setMoves] = useState(gameInitSettings ? gameInitSettings.moveHistory : []);
     const [isLoaded, setIsLoaded] = useState(false);
     const [game, setGame] = useState(Shogi.default());
+    // unity sent skin choice
+    
+    const Skin = (localStorage.getItem("Skin"));
+    PieceSkin(function () {
+        
+        unityContext.send("Tile", "SetSkin", Skin);
+        unityContext.send("Droppable", "SetSkin", Skin);
+    });
 
     // Unity Event Responses
     useEffect(function () {
