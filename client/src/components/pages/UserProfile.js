@@ -14,6 +14,7 @@ function UserProfile() {
     let { id } = useParams();
     let navigate = useNavigate();
     const [isPerson, setIsPerson] = useState(false);
+    const [Skin, setSkin] = useState("skin-selector");
     const [gameHistory, setGameHistory] = useState();
     useEffect(() => {
         axios.get("http://localhost:5000/user/" + encodeURI(id), {
@@ -43,6 +44,33 @@ function UserProfile() {
     //check if current user's logged in as decoded URI, then show edit profile options
     return (
         <>
+            <h1>{id}'s Profile</h1>
+            <form>
+                <label className="skin-selector">
+                    Skin Options
+                    <select value={Skin} onChange={(e)=>setSkin(e.target.value)}>
+                        <option value="chess">chess</option>
+                        <option value="navy">navy</option>
+                        <option value="fantasy">fantasy</option>
+                        <option value="shogi">shogi</option>
+                    </select>
+                </label>
+
+                if(document.getElementByValue('chess').selected) {Skin = "chess"}
+                if(document.getElementByValue('navy').selected) {Skin = "navy"}
+                if(document.getElementByValue('fantasy').selected) {Skin = "fantasy"}
+                if(document.getElementByValue('shogi').selected) {Skin = "shogi"}
+                
+
+                localStorage.setItem("Skin", SKINVARIABLE);
+                
+                  
+            </form>
+                    
+                
+         
+            
+
             <h1>{id}'s Game History</h1>
             <div className="game-history">
                 {(gameHistory === undefined) ? <h2>No games found</h2> : gameHistory.map(item => {
