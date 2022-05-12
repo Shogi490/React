@@ -21,12 +21,7 @@ function Board({ gameInitSettings }) {
     // unity sent skin choice
     
     const Skin = (localStorage.getItem("Skin"));
-    PieceSkin(function () {
-        
-        unityContext.send("Tile", "SetSkin", Skin);
-        unityContext.send("Droppable", "SetSkin", Skin);
-    });
-
+   
     // Unity Event Responses
     useEffect(function () {
         // When Unity finishes loading. Initialize Unity.
@@ -36,6 +31,8 @@ function Board({ gameInitSettings }) {
                 game.play(move);
             }
             unityContext.send("GameController", "FromSFEN", makeSfen(game.toSetup()));
+            unityContext.send("Tile", "SetSkin", Skin);
+            unityContext.send("Droppable", "SetSkin", Skin);
             setIsLoaded(true); // shows Unity.
         });
         // When player clicked on their piece and wants to know where it can move

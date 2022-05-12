@@ -31,14 +31,14 @@ function App() {
     localStorage.setItem('anonID', generateAnonID());
     }
 
-    generateSkin() {
-        var Skin = "chess";
-        return Skin;
-    }
+   // generateSkin() {
+      //  var Skin = "chess";
+      //  return Skin;
+   // }
     
-    if (!localStorage.getItem("Skin") && !localStorage.getItem("token")) {
-        localStorage.setItem('Skin', generateSkin());
-    }
+   // if (!localStorage.getItem("Skin") && !localStorage.getItem("token")) {
+     //   localStorage.setItem('Skin', generateSkin());
+    //}
 
   return (
     <>
