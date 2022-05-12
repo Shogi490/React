@@ -24,15 +24,24 @@ function Board({ gameInitSettings }) {
     const colNames = ['Player','Move'];
     const playerIs = ['P1'];
     
+    // unity sent skin choice
+    
+    const Skin = (localStorage.getItem("Skin"));
+    useEffect(() => {
+        unityContext.send("Tile", "SetSkin", Skin);
+        unityContext.send("Droppable", "SetSkin", Skin);
+    }, [Skin])
     // Unity Event Responses
     useEffect(function () {
         // When Unity finishes loading. Initialize Unity.
+
         unityContext.on("loaded", function () {
             console.log("Unity has finished loading!");
             for (let move in moves) {
                 //game.play(move);
             }
             unityContext.send("GameController", "FromSFEN", makeSfen(game.toSetup()));
+
             setIsLoaded(true); // shows Unity.
         });
         // When player clicked on their piece and wants to know where it can move

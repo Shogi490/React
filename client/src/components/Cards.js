@@ -20,14 +20,6 @@ function Cards() {
             <CardItem src='Images/rook.png' text='The Rook'  path='/LearnInfo/Rook'/>
             <CardItem src='Images/pawn.png' text='The Pawn'  path='/LearnInfo/Pawn'/>
           </ul>
-          <h1>Useful playlists</h1>
-          <ul className="cardsitems">
-            <CardItem src='' text='Learn to play'  path="how-to-play"/>
-            <CardItem src='' text='Openings'  path='/openings'/>
-            <CardItem src='' text='Famous Games' path='/famous-games' />
-            <CardItem src='' text='More strategy'  path='/LearnInfo/Lance'/>
-          </ul>
-          <p>We have no rights to the videos and playlists linked here, this is just recommended for useful information</p>
         </div>
       </div>
     </div>

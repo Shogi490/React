@@ -7,13 +7,13 @@
     background-color: burlywood;
     box-shadow: inset 0 0 0 1000px rgba(0,0,0,.3);
     background-size: cover;
-    height: 86.1vh;
+    height: 91vh;
 }
 .shogiBoard {
-    background: #242424;
     width: 1343px;
     height: 747px;
     margin-top: 40px;
+    padding-bottom: 20px;
 }
 
 .moveTracker {
