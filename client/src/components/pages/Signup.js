@@ -11,10 +11,11 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
   
   const handleSubmit = event => {
     event.preventDefault();
-    axios.post("http://localhost:5000/sign-up", {email, username, password}).then(res => {console.log(res); console.log(res.data)});
+    axios.post("http://localhost:5000/sign-up", {email, username, password}).then(res => {console.log(res); console.log(res.data); history('/login');});
   }
   return (
     <>

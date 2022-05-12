@@ -27,6 +27,7 @@
 .background-login {
     background-image: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.giappominkia.com%2Fwp-content%2Fuploads%2F2019%2F10%2Fshogi-scacchi-giapponesi.jpg&f=1&nofb=1");
     background-color: burlywood;
+    box-shadow: inset 0 0 0 1000px rgba(0,0,0,.3);
     position: absolute;
     top: 0;
     left: 0;

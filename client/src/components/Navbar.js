@@ -2,9 +2,11 @@ import React, {useState, useEffect} from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button } from './Button';
 import './Navbar.css';
+import jwt_decode from "jwt-decode";
 
-function Navbar( { username } ) {
+function Navbar() {
     const navigate = useNavigate();
+    const [username, setUsername] = useState(undefined);
     const [click, setClick] = useState(false);
     const handleClick = () => setClick(!click);
     const closeMobileMenu = () => setClick(false);
@@ -16,10 +18,23 @@ function Navbar( { username } ) {
             setButton(true);
         }
     };
-    
+    const getUsername = () => {
+        const token = (localStorage.getItem('token'));
+        if(token) {
+          const decoded = jwt_decode(token);
+          setUsername(decoded.username);
+        }
+        window.addEventListener('storage', getUsername);
+        window.removeEventListener('storage', getUsername);
+    }
+    useEffect(() => {
+        getUsername();
+
+    }, [getUsername])
     useEffect(()=> {
         showButton();
     }, []);
+
     window.addEventListener('resize', showButton);
     return (
         <>
