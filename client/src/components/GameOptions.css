@@ -22,7 +22,9 @@
   flex-flow: column;
   background: white;
 }
-
+.isPvP { 
+  padding: 10px;
+}
 .close{
   position: absolute;
   top: -12px;
@@ -41,6 +43,10 @@
 .game-options-form{
   display:flex;
   flex-flow:column;
+}
+
+.game-option {
+  padding: 5px;
 }
 
 .time-control{

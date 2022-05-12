@@ -42,8 +42,7 @@ app.use(bodyParser.json());
 //connecting to db
 const dotenv = require("dotenv").config();
 console.log(process.env.MONGO_URL);
-const temporaryMongoURL = "mongodb+srv://birdbear:Timmp0Pdsi5@cluster0.azmhy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-mongoose.connect(temporaryMongoURL, {useNewUrlParser: true}).then(()=> console.log("MongoDB successfully connected")).catch(err => console.log(err));
+mongoose.connect(process.env.MONGO_URL, {useNewUrlParser: true}).then(()=> console.log("MongoDB successfully connected")).catch(err => console.log(err));
 //connect to db end
 app.get("/404", (req,res) => {
     res.json({message: "404 page not found"});
@@ -94,16 +93,31 @@ app.get("/user/:id", verifyJWT , (req,res) => {
 app.get("/game/:id", (req,res)=> {
     //res with data, store it into board on <GamePage>
     //FindByID - mongoose 
-    Game.findById(req.params.id, ( err, game) => {
+    Game.findById(req.params.id, (err, game) => {
         if( err ) {
             // do something;
-            console.error(err);
             res.send("Game Not Found");
-            return;
+            console.error(err);
+
         }
         console.log(`Successfully found game: ${game._id}`);
-        res.send(game.toJSON());
+        res.send(game);
     });
+})
+
+app.get("/game/history/:id", (req,res) => {
+    //have to make db query for creatorUsername and opponentUsername
+    let username = req.params.id;
+    Game.find({$or: [{creatorID: username}, {opponentUsername: username}]},
+        function(err, docs) {
+            if(err) return console.error(err);
+            if(docs.length == 0) {
+                res.json({error: "No games under this user"});
+            } else {
+                res.send(docs);
+            }
+            
+        })
 })
 
 app.post("/create/game", (req,res) => {
